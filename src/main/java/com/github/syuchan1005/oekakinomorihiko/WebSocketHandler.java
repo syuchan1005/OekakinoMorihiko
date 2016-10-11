@@ -33,13 +33,13 @@ public class WebSocketHandler {
 	@OnWebSocketConnect
 	public void onConnect(Session session) throws Exception {
 		sessions.add(session);
-		broadcastMessage("{ \"session_count_load\": \"" + sessions.size() + "\"}");
+		broadcastMessage(null, "{ \"session_count_load\": \"" + sessions.size() + "\"}");
 	}
 
 	@OnWebSocketClose
 	public void onClose(Session session, int statusCode, String reason) throws IOException {
 		sessions.remove(session);
-		broadcastMessage("{ \"session_count_load\": \"" + sessions.size() + "\"}");
+		broadcastMessage(null, "{ \"session_count_load\": \"" + sessions.size() + "\"}");
 	}
 
 	@OnWebSocketMessage
@@ -47,11 +47,12 @@ public class WebSocketHandler {
 		if (message.equals("Keep-Alive")) return;
 		JSONObject jsonObject = mapper.readValue(message, JSONObject.class);
 		jsonObject.put("session_count", sessions.size());
-		broadcastMessage(jsonObject.toString());
+		broadcastMessage(session, jsonObject.toString());
 	}
 
-	private void broadcastMessage(String message) {
+	private void broadcastMessage(Session session, String message) {
 		sessions.stream()
+				.filter(s -> !s.equals(session))
 				.filter(Session::isOpen)
 				.forEach(s -> {
 					try {
