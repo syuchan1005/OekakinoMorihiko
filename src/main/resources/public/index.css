@@ -1,3 +1,13 @@
+body {
+    user-select: none; /* CSS3 */
+    -moz-user-select: none; /* Firefox */
+    -webkit-user-select: none; /* Safari、Chromeなど */
+}
+
+#main_canvas {
+    border: 5px solid #e6e6e6;
+}
+
 .menuicon {
     height: 20px;
     width: 20px;
