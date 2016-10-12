@@ -61,7 +61,7 @@
             sendDraw(size, color, alpha, X, Y);
             draw(size, color, alpha, X, Y);
         }
-    };
+    }
 
     function draw(Size, Color, Alpha, X, Y) {
         ctx.beginPath();
@@ -69,15 +69,7 @@
         ctx.fillStyle = Color;
         ctx.arc(X, Y, Size, 0, Math.PI * 2, false);
         ctx.fill();
-        /*
-         ctx.lineTo(X, Y);
-         //直線の角を「丸」、サイズと色を決める
-         ctx.lineCap = "round";
-         ctx.lineWidth = Size * 2;
-         ctx.strokeStyle = Color;
-         ctx.stroke();
-         */
-    };
+    }
 
     function sendDraw(Size, Color, Alpha, X, Y) {
         var json = new Object();
@@ -90,7 +82,16 @@
         webSocket.send(JSON.stringify(json));
     }
 
-    // chatの処理
+    // range処理
+    var range = document.getElementById("alpha");
+    var rangeValue = document.getElementById("alphavalue");
+    range.addEventListener("input", onInput, false);
+    function onInput() {
+        alpha = range.value / 100.0;
+        rangeValue.value = alpha * 10;
+    }
+
+    // chat処理
     document.getElementById("chatsend").addEventListener("click", sendChat, false);
 
     var chatText = document.getElementById("chattext");
@@ -105,14 +106,12 @@
     }
 
     var chat_list = document.getElementById("chatcontentlist");
-
     function appendChat(text, self) {
         var ele = document.createElement("article");
         ele.id = self ? "mychatcontent" : "chatcontent";
         ele.innerHTML = lineWrap(text, 21);
         prependChild(chat_list, ele);
     }
-
     function lineWrap(text, maxlength) {
         var resultText = [""];
         var len = text.length;
@@ -139,7 +138,6 @@
         }
         return resultText.join("");
     }
-
     function prependChild(parent, newFirstChild) {
         parent.insertBefore(newFirstChild, parent.firstChild)
     }
@@ -152,13 +150,11 @@
         ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
-    // メニューの処理を追加
+    // メニュー処理
     var menuIcon = document.getElementsByClassName("menuicon");
     for (i = 0; i < menuIcon.length; i++) {
         menuIcon[i].addEventListener("click", canvasMenu, false)
     }
-
-    // メニュー処理
     function canvasMenu() {
         var thisId = this.id;
         if (thisId.indexOf("size") + 1) {
@@ -166,9 +162,6 @@
         }
         if (thisId.indexOf("color") + 1) {
             color = "#" + this.id.slice(5, this.id.length);
-        }
-        if (thisId.indexOf("alpha") + 1) {
-            alpha = (~~this.id.slice(5, this.id.length)) / 10;
         }
         if (thisId.indexOf("clear") + 1) {
             if (confirm("すべて消去しますか？")) {
