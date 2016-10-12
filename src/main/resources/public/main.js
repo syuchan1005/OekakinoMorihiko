@@ -82,11 +82,18 @@
         webSocket.send(JSON.stringify(json));
     }
 
+    //color処理
+    var colorInput = document.getElementById("color");
+    colorInput.addEventListener("input", onInputColor, false);
+    function onInputColor() {
+        color = colorInput.value;
+    }
+
     // range処理
     var range = document.getElementById("alpha");
     var rangeValue = document.getElementById("alphavalue");
-    range.addEventListener("input", onInput, false);
-    function onInput() {
+    range.addEventListener("input", onInputRange, false);
+    function onInputRange() {
         alpha = range.value / 100.0;
         rangeValue.value = alpha * 10;
     }

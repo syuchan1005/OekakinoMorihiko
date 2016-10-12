@@ -32,19 +32,7 @@
                 <div class="menuicon" id="size14">14</div>
                 <div class="menuicon" id="size7">7</div>
                 <div class="menuicon" id="size3">3</div>
-                <div class="menuicon" id="colore91e63" style="background-color:#e91e63"></div>
-                <div class="menuicon" id="colorffeb3b" style="background-color:#ffeb3b"></div>
-                <div class="menuicon" id="colorff4801" style="background-color:#ff4801"></div>
-                <div class="menuicon" id="color536dfe" style="background-color:#536dfe"></div>
-                <div class="menuicon" id="color009688" style="background-color:#009688"></div>
-                <div class="menuicon" id="color00e676" style="background-color:#00e676"></div>
-                <div class="menuicon" id="color555555" style="background-color:#555555"></div>
-                <!--
-                <div class="menuicon" id="alpha10" style="background-color:rgba(255,72,1, 1.0)">10</div>
-                <div class="menuicon" id="alpha6" style="background-color:rgba(255,72,1, 0.6)">6</div>
-                <div class="menuicon" id="alpha3" style="background-color:rgba(255,72,1, 0.3)">3</div>
-                <div class="menuicon" id="alpha1" style="background-color:rgba(255,72,1, 0.1)">1</div>
-                -->
+                <input type="color" id="color" list="colors" value="#555555">
                 <input type="text" class="menuicon" id="alphavalue" value="10.0" readonly>
                 <input type="range" class="menuicon" id="alpha" value="100">
             </div>
@@ -54,6 +42,18 @@
         </td>
     </tr>
 </table>
+
+<datalist id="colors">
+    <option value="#637d97"></option>
+    <option value="#63977d"></option>
+    <option value="#7d9763"></option>
+    <option value="#7d6397"></option>
+    <option value="#97637d"></option>
+    <option value="#977d63"></option>
+    <option value="#808080"></option>
+    <option value="#f5f5f5"></option>
+    <option value="#555555"></option>
+</datalist>
 
 <script src="main.js"></script>
 </body>

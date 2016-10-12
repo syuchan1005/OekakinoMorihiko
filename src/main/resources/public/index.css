@@ -46,6 +46,11 @@ body {
     margin: 10px 10px 10px 10px;
 }
 
+input[type="color"] {
+    float: right;
+    margin-right: 10px;
+}
+
 input[type="text"]#alphavalue {
     background-color: transparent;
     border-radius: 0;
