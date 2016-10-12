@@ -31,3 +31,17 @@ body {
     content: "";
     display: block;
 }
+
+#chatcontent {
+    background-color: #dddddd;
+    border-radius: 3px;
+    padding-left: 5px;
+    margin: 10px 10px 10px 10px;
+}
+
+#mychatcontent {
+    background-color: #00e676;
+    border-radius: 3px;
+    padding-left: 5px;
+    margin: 10px 10px 10px 10px;
+}

@@ -5,20 +5,27 @@
 </head>
 
 <body>
-<table>
+<table border="double">
     <tr>
         <td>
             <canvas width="1280" height="720" id="main_canvas"></canvas>
         </td>
-        <td>
+        <td style="vertical-align: top">
+            <div style="margin-bottom: 10px">
+                <label id="sessioncount">接続人数?????人</label>
+            </div>
             <div>
-                <label id="session_count">接続人数?????人</label>
+                <input id="chattext" type="text" placeholder="送りたい文章を入力してください">
+                <input id="chatsend" type="button" value="送信">
+                <div id="chatcontentlist">
+                    <!-- Javascript <article class="chat_content">Test</article> -->
+                </div>
             </div>
         </td>
     </tr>
     <tr>
-        <td colspan="2">
-            <div id="canvasmenu">
+        <td>
+            <div id="canvasmenu" style="margin-left: 600px">
                 <div class="menuicon" id="clear">×</div>
                 <div class="menuicon" id="colorf5f5f5">消</div>
                 <div class="menuicon" id="size21">21</div>
@@ -37,6 +44,9 @@
                 <div class="menuicon" id="alpha3" style="background-color:rgba(255,72,1, 0.3)">3</div>
                 <div class="menuicon" id="alpha1" style="background-color:rgba(255,72,1, 0.1)">1</div>
             </div>
+        </td>
+        <td>
+            <p>@syu_chan_1005</p>
         </td>
     </tr>
 </table>

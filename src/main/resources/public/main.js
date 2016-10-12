@@ -1,26 +1,32 @@
 (function () {
     var keepAlive;
-    // var webSocket = new WebSocket("ws://" + location.hostname + ":" + location.port + "/web/");
-    var webSocket = new WebSocket("ws://" + location.hostname + ":" + 4567 + "/web/");
+    var webSocket = new WebSocket("ws://" + location.hostname + ":" + location.port + "/web/");
     webSocket.onopen = function (event) {
         keepAlive = setInterval(function () {
             webSocket.send("Keep-Alive");
-        }, 295000);
+        }, 299950);
     };
     webSocket.onclose = function (event) {
         clearInterval(keepAlive);
         alert("WebSocket connection closed")
     };
 
-    var count = document.getElementById("session_count");
+    var count = document.getElementById("sessioncount");
     webSocket.onmessage = function (event) {
         var json = JSON.parse(event.data);
         if (json.session_count == undefined) {
             count.innerHTML = "接続人数" + json.session_count_load + "人";
         } else {
             count.innerHTML = "接続人数" + json.session_count + "人";
-            if (json.size == "AllClear") canvasClear();
-            draw(json.size, json.color, json.alpha, json.x, json.y);
+            if (json.mode == "paint") {
+                if (json.size == "AllClear") {
+                    canvasClear();
+                } else {
+                    draw(json.size, json.color, json.alpha, json.x, json.y);
+                }
+            } else if (json.mode == "chat") {
+                appendChat(json.text, false);
+            }
         }
     };
 
@@ -33,13 +39,9 @@
     var size = 7;
     var color = "#555555";
     var alpha = 1.0;
-    var mouseX = "";
-    var mouseY = "";
 
     canvas.addEventListener('mousemove', onMove, false);
     canvas.addEventListener('mousedown', onClick, false);
-    canvas.addEventListener('mouseup', drawEnd, false);
-    canvas.addEventListener('mouseout', drawEnd, false);
 
     function onMove(e) {
         if (e.buttons === 1 || e.witch === 1) {
@@ -56,6 +58,7 @@
             var rect = e.target.getBoundingClientRect();
             var X = ~~(e.clientX - rect.left);
             var Y = ~~(e.clientY - rect.top);
+            sendDraw(size, color, alpha, X, Y);
             draw(size, color, alpha, X, Y);
         }
     };
@@ -63,39 +66,54 @@
     function draw(Size, Color, Alpha, X, Y) {
         ctx.beginPath();
         ctx.globalAlpha = Alpha;
-        //マウス継続値によって場合分け、直線の moveTo（スタート地点）を決定
-        if (mouseX === "") {
-            //継続値が初期値の場合は、現在のマウス位置をスタート位置とする
-            ctx.moveTo(X, Y);
-        } else {
-            //継続値が初期値ではない場合は、前回のゴール位置を次のスタート位置とする
-            ctx.moveTo(mouseX, mouseY);
-        }
-        //lineTo（ゴール地点）の決定、現在のマウス位置をゴール地点とする
+        ctx.fillStyle = Color;
+        ctx.arc(X, Y, Size, 0, Math.PI * 2, false);
+        ctx.fill();
+        /*
         ctx.lineTo(X, Y);
         //直線の角を「丸」、サイズと色を決める
         ctx.lineCap = "round";
         ctx.lineWidth = Size * 2;
         ctx.strokeStyle = Color;
         ctx.stroke();
-        // 現在のマウス位置を代入
-        mouseX = X;
-        mouseY = Y;
+        */
     };
-
-    function drawEnd() {
-        mouseX = "";
-        mouseY = "";
-    }
 
     function sendDraw(Size, Color, Alpha, X, Y) {
         var json = new Object();
+        json.mode = "paint";
         json.size = Size;
         json.color = Color;
         json.Alpha = alpha;
         json.x = X;
         json.y = Y;
         webSocket.send(JSON.stringify(json));
+    }
+
+    // chatの処理
+    document.getElementById("chatsend").addEventListener("click", sendChat, false);
+
+    var chatText = document.getElementById("chattext");
+    function sendChat() {
+        var o = new Object();
+        o.mode = "chat";
+        o.text = chatText.value;
+        webSocket.send(JSON.stringify(o));
+        appendChat(chatText.value, true);
+        chatText.value = "";
+    }
+
+    var chat_list = document.getElementById("chatcontentlist");
+    function appendChat(text, self) {
+        var ele = document.createElement("article");
+        ele.id = self ? "mychatcontent" : "chatcontent";
+        ele.innerHTML = text;
+        prependChild(chat_list, ele);
+        // chat_list.appendChild(ele);
+    }
+
+    function prependChild(parent, newFirstChild) {
+        parent.insertBefore(newFirstChild, parent.firstChild)
     }
 
     // キャンバスの初期化をする
@@ -127,6 +145,7 @@
         if (thisId.indexOf("clear") + 1) {
             if (confirm("すべて消去しますか？")) {
                 var o = new Object();
+                o.mode = "paint";
                 o.size = "AllClear";
                 webSocket.send(JSON.stringify(o));
                 canvasClear();
