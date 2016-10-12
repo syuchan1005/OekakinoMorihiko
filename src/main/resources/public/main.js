@@ -70,13 +70,13 @@
         ctx.arc(X, Y, Size, 0, Math.PI * 2, false);
         ctx.fill();
         /*
-        ctx.lineTo(X, Y);
-        //直線の角を「丸」、サイズと色を決める
-        ctx.lineCap = "round";
-        ctx.lineWidth = Size * 2;
-        ctx.strokeStyle = Color;
-        ctx.stroke();
-        */
+         ctx.lineTo(X, Y);
+         //直線の角を「丸」、サイズと色を決める
+         ctx.lineCap = "round";
+         ctx.lineWidth = Size * 2;
+         ctx.strokeStyle = Color;
+         ctx.stroke();
+         */
     };
 
     function sendDraw(Size, Color, Alpha, X, Y) {
@@ -94,22 +94,50 @@
     document.getElementById("chatsend").addEventListener("click", sendChat, false);
 
     var chatText = document.getElementById("chattext");
+
     function sendChat() {
         var o = new Object();
         o.mode = "chat";
-        o.text = chatText.value;
+        o.text = chatText.value.replace("<", "&lt;").replace(">", "&gt;");
         webSocket.send(JSON.stringify(o));
-        appendChat(chatText.value, true);
+        appendChat(o.text, true);
         chatText.value = "";
     }
 
     var chat_list = document.getElementById("chatcontentlist");
+
     function appendChat(text, self) {
         var ele = document.createElement("article");
         ele.id = self ? "mychatcontent" : "chatcontent";
-        ele.innerHTML = text;
+        ele.innerHTML = lineWrap(text, 21);
         prependChild(chat_list, ele);
-        // chat_list.appendChild(ele);
+    }
+
+    function lineWrap(text, maxlength) {
+        var resultText = [""];
+        var len = text.length;
+        if (maxlength >= len) {
+            return text;
+        }
+        else {
+            var totalStrCount = parseInt(len / maxlength);
+            if (len % maxlength != 0) {
+                totalStrCount++
+            }
+
+            for (var i = 0; i < totalStrCount; i++) {
+                if (i == totalStrCount - 1) {
+                    resultText.push(text);
+                }
+                else {
+                    var strPiece = text.substring(0, maxlength - 1);
+                    resultText.push(strPiece);
+                    resultText.push("<br>");
+                    text = text.substring(maxlength - 1, text.length);
+                }
+            }
+        }
+        return resultText.join("");
     }
 
     function prependChild(parent, newFirstChild) {
