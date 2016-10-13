@@ -36,7 +36,7 @@
     canvasClear();
 
     //初期値（サイズ、色、アルファ値、マウス）の決定
-    var size = 7;
+    var size = 5;
     var color = "#555555";
     var alpha = 1.0;
 
@@ -51,7 +51,7 @@
             sendDraw(size, color, alpha, X, Y);
             draw(size, color, alpha, X, Y);
         }
-    };
+    }
 
     function onClick(e) {
         if (e.button === 0) {
@@ -76,17 +76,36 @@
         json.mode = "paint";
         json.size = Size;
         json.color = Color;
-        json.Alpha = alpha;
+        json.alpha = alpha;
         json.x = X;
         json.y = Y;
         webSocket.send(JSON.stringify(json));
     }
+
+    var mainStyle = document.styleSheets[0];
+
+    // size処理
+    var sizeInput = document.getElementById("size");
+    sizeInput.addEventListener("input", onInputSize, false);
+    function onInputSize() {
+        size = sizeInput.value / 2.0;
+        mainStyle.addRule('input[type="range"]#size::-webkit-slider-thumb:hover', "width: " + size + "px;");
+        mainStyle.addRule('input[type="range"]#size::-webkit-slider-thumb:hover', "height: " + size + "px;");
+        mainStyle.addRule('input[type="range"]#size::-webkit-slider-thumb:active', "width: " + size + "px;");
+        mainStyle.addRule('input[type="range"]#size::-webkit-slider-thumb:active', "height: " + size + "px;");
+        size /= 2.0;
+        mainStyle.addRule('input[type="range"]#size::-webkit-slider-thumb:hover', "border-radius: " + size + "px;");
+        mainStyle.addRule('input[type="range"]#size::-webkit-slider-thumb:active', "border-radius: " + size + "px;");
+        console.log(size);
+    }
+
 
     //color処理
     var colorInput = document.getElementById("color");
     colorInput.addEventListener("input", onInputColor, false);
     function onInputColor() {
         color = colorInput.value;
+        mainStyle.addRule('input[type="range"]#size::-webkit-slider-thumb', "background-color: " + color + ";");
     }
 
     // range処理
@@ -164,11 +183,9 @@
     }
     function canvasMenu() {
         var thisId = this.id;
-        if (thisId.indexOf("size") + 1) {
-            size = ~~this.id.slice(4, this.id.length);
-        }
         if (thisId.indexOf("color") + 1) {
             color = "#" + this.id.slice(5, this.id.length);
+            colorInput.value = color;
         }
         if (thisId.indexOf("clear") + 1) {
             if (confirm("すべて消去しますか？")) {
