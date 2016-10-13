@@ -118,14 +118,17 @@
     }
 
     // chat処理
-    document.getElementById("chatsend").addEventListener("click", sendChat, false);
-
+    var chatUserText = document.getElementById("username");
     var chatText = document.getElementById("chattext");
+    document.getElementById("chatsend").addEventListener("click", sendChat, false);
 
     function sendChat() {
         var o = new Object();
         o.mode = "chat";
-        o.text = chatText.value.replace("<", "&lt;").replace(">", "&gt;");
+        var user = chatUserText.value;
+        var text = chatText.value;
+        if (text == undefined || text == "") return;
+        o.text = (user == undefined || user == "" ? "匿名" : user) + "<br>" + text.replace("<", "&lt;").replace(">", "&gt;");
         webSocket.send(JSON.stringify(o));
         appendChat(o.text, true);
         chatText.value = "";
