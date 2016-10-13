@@ -82,6 +82,26 @@
         webSocket.send(JSON.stringify(json));
     }
 
+    function canvasClear() {
+        ctx.beginPath();
+        ctx.fillStyle = "#f5f5f5";
+        ctx.globalAlpha = 1.0;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    document.getElementById("downloadPng").addEventListener("click", openCanvasPng, false);
+
+    function openCanvasPng() {
+        var type = 'image/png';
+        var bin = atob(canvas.toDataURL(type).split(',')[1]);
+        var buffer = new Uint8Array(bin.length);
+        for (var i = 0; i < bin.length; i++) {
+            buffer[i] = bin.charCodeAt(i);
+        }
+        var url = window.URL.createObjectURL(new Blob([buffer.buffer], {type: type}));
+        window.open(url);
+    }
+
     var mainStyle = document.styleSheets[0];
 
     // size処理
@@ -177,14 +197,6 @@
     }
     function prependChild(parent, newFirstChild) {
         parent.insertBefore(newFirstChild, parent.firstChild)
-    }
-
-    // キャンバスの初期化をする
-    function canvasClear() {
-        ctx.beginPath();
-        ctx.fillStyle = "#f5f5f5";
-        ctx.globalAlpha = 1.0;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
     // メニュー処理
