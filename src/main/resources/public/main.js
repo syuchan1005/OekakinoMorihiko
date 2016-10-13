@@ -18,14 +18,22 @@
             count.innerHTML = "接続人数" + json.session_count_load + "人";
         } else {
             count.innerHTML = "接続人数" + json.session_count + "人";
-            if (json.mode == "paint") {
-                if (json.size == "AllClear") {
-                    canvasClear();
-                } else {
-                    draw(json.size, json.color, json.alpha, json.x, json.y);
-                }
-            } else if (json.mode == "chat") {
-                appendChat(json.text, false);
+            switch (json.mode) {
+                case "paint":
+                    if (json.size == "AllClear") {
+                        canvasClear();
+                    } else {
+                        draw(json.size, json.color, json.alpha, json.x, json.y);
+                    }
+                    break;
+                case "chat":
+                    appendChat(json.text, false);
+                    break;
+                case "fill":
+                    ctx.globalAlpha = json.alpha;
+                    ctx.fillStyle = json.color;
+                    ctx.fillFlood(json.x, json.y, 40);
+                    break;
             }
         }
     };
@@ -51,7 +59,7 @@
             var rect = e.target.getBoundingClientRect();
             var X = ~~(e.clientX - rect.left);
             var Y = ~~(e.clientY - rect.top);
-            sendDraw(size, color, alpha, X, Y);
+            sendWebSocket("paint", size, color, alpha, X, Y);
             draw(size, color, alpha, X, Y);
         }
     }
@@ -69,10 +77,11 @@
             } else if (fill) {
                 ctx.globalAlpha = alpha;
                 ctx.fillStyle = color;
-                ctx.fillFlood(X, Y, 32);
+                ctx.fillFlood(X, Y, 40);
                 fill = false;
+                sendWebSocket("fill", 0, color, alpha, X, Y);
             } else {
-                sendDraw(size, color, alpha, X, Y);
+                sendWebSocket("paint", size, color, alpha, X, Y);
                 draw(size, color, alpha, X, Y);
             }
         }
@@ -91,12 +100,12 @@
         ctx.fill();
     }
 
-    function sendDraw(Size, Color, Alpha, X, Y) {
+    function sendWebSocket(Mode, Size, Color, Alpha, X, Y) {
         var json = new Object();
-        json.mode = "paint";
+        json.mode = Mode;
         json.size = Size;
         json.color = Color;
-        json.alpha = alpha;
+        json.alpha = Alpha;
         json.x = X;
         json.y = Y;
         webSocket.send(JSON.stringify(json));
