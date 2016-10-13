@@ -4,7 +4,7 @@
     webSocket.onopen = function (event) {
         keepAlive = setInterval(function () {
             webSocket.send("Keep-Alive");
-        }, 299950);
+        }, 150000);
     };
     webSocket.onclose = function (event) {
         clearInterval(keepAlive);
@@ -40,6 +40,8 @@
     var color = "#555555";
     var alpha = 1.0;
 
+    var spoit = false;
+
     canvas.addEventListener('mousemove', onMove, false);
     canvas.addEventListener('mousedown', onClick, false);
 
@@ -58,10 +60,22 @@
             var rect = e.target.getBoundingClientRect();
             var X = ~~(e.clientX - rect.left);
             var Y = ~~(e.clientY - rect.top);
-            sendDraw(size, color, alpha, X, Y);
-            draw(size, color, alpha, X, Y);
+            if (spoit) {
+                var spoitImage = ctx.getImageData(X, Y, 1, 1);
+                colorInput.value = toColorCode(spoitImage.data[0], spoitImage.data[1], spoitImage.data[2]);
+                onInputColor();
+                spoit = false;
+            } else {
+                sendDraw(size, color, alpha, X, Y);
+                draw(size, color, alpha, X, Y);
+            }
         }
     }
+
+    function toColorCode(r,g,b){
+        return '#' + (((256 + r << 8) + g << 8) + b).toString(16).slice(1);
+    }
+
 
     function draw(Size, Color, Alpha, X, Y) {
         ctx.beginPath();
@@ -116,7 +130,6 @@
         size /= 2.0;
         mainStyle.addRule('input[type="range"]#size::-webkit-slider-thumb:hover', "border-radius: " + size + "px;");
         mainStyle.addRule('input[type="range"]#size::-webkit-slider-thumb:active', "border-radius: " + size + "px;");
-        console.log(size);
     }
 
 
@@ -154,7 +167,7 @@
         chatText.value = "";
     }
 
-    document.onkeydown = function(e) {
+    document.onkeydown = function (e) {
         if (typeof e.modifiers == 'undefined' ? e.ctrlKey : e.modifiers & Event.CONTROL_MASK) {
             if (e.which == 13) { //enter
                 sendChat();
@@ -163,12 +176,14 @@
     }
 
     var chat_list = document.getElementById("chatcontentlist");
+
     function appendChat(text, self) {
         var ele = document.createElement("article");
         ele.id = self ? "mychatcontent" : "chatcontent";
         ele.innerHTML = lineWrap(text, 21);
         prependChild(chat_list, ele);
     }
+
     function lineWrap(text, maxlength) {
         var resultText = [""];
         var len = text.length;
@@ -195,6 +210,7 @@
         }
         return resultText.join("");
     }
+
     function prependChild(parent, newFirstChild) {
         parent.insertBefore(newFirstChild, parent.firstChild)
     }
@@ -209,8 +225,7 @@
         if (thisId.indexOf("color") + 1) {
             color = "#" + this.id.slice(5, this.id.length);
             colorInput.value = color;
-        }
-        if (thisId.indexOf("clear") + 1) {
+        } else if (thisId.indexOf("clear") + 1) {
             if (confirm("すべて消去しますか？")) {
                 var o = new Object();
                 o.mode = "paint";
@@ -218,6 +233,8 @@
                 webSocket.send(JSON.stringify(o));
                 canvasClear();
             }
+        } else if (thisId.indexOf("spoit") + 1) {
+            spoit = true;
         }
     }
 })();
