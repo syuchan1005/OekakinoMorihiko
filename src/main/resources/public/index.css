@@ -89,6 +89,10 @@ input[type="range"]::-webkit-slider-thumb:hover {
     border: 2px solid #e74c3c;
 }
 
+input[type="range"]#size::-webkit-slider-thumb:hover {
+    border: none;
+}
+
 input[type="range"]::-webkit-slider-thumb:active {
     transform: scale(1.4);
 }
