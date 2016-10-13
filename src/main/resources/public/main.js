@@ -108,13 +108,13 @@
         mainStyle.addRule('input[type="range"]#size::-webkit-slider-thumb', "background-color: " + color + ";");
     }
 
-    // range処理
+    // alpha処理
     var range = document.getElementById("alpha");
     var rangeValue = document.getElementById("alphavalue");
     range.addEventListener("input", onInputRange, false);
     function onInputRange() {
         alpha = range.value / 100.0;
-        rangeValue.value = alpha * 10;
+        rangeValue.value = Math.floor(alpha * 10);
     }
 
     // chat処理
