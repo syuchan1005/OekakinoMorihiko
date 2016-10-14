@@ -19,8 +19,7 @@ function onMove(e) {
         var rect = e.target.getBoundingClientRect();
         var X = ~~(e.clientX - rect.left);
         var Y = ~~(e.clientY - rect.top);
-        sendWebSocket("paint", size, color, alpha, X, Y);
-        draw(size, color, alpha, X, Y);
+        sendDraw("paint", size, color, alpha, X, Y);
     }
 }
 
@@ -35,14 +34,10 @@ function onClick(e) {
             onInputColor();
             spoit = false;
         } else if (fill) {
-            ctx.globalAlpha = alpha;
-            ctx.fillStyle = color;
-            ctx.fillFlood(X, Y, 40);
             fill = false;
-            sendWebSocket("fill", 0, color, alpha, X, Y);
+            sendDraw("fill", 0, color, alpha, X, Y);
         } else {
-            sendWebSocket("paint", size, color, alpha, X, Y);
-            draw(size, color, alpha, X, Y);
+            sendDraw("paint", size, color, alpha, X, Y);
         }
     }
 }
@@ -115,7 +110,7 @@ function onInputRange() {
 
 // メニュー処理
 var menuIcon = document.getElementsByClassName("menuicon");
-for (i = 0; i < menuIcon.length; i++) {
+for (var i = 0; i < menuIcon.length; i++) {
     menuIcon[i].addEventListener("click", canvasMenu, false)
 }
 function canvasMenu() {

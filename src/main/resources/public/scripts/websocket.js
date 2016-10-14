@@ -2,6 +2,7 @@
  * Created by syuchan on 2016/10/14.
  */
 var keepAlive;
+var mySessionId;
 var webSocket = new WebSocket("ws://" + location.hostname + ":" + location.port + "/web/");
 
 webSocket.onopen = function (event) {
@@ -20,6 +21,9 @@ webSocket.onmessage = function (event) {
     var json = JSON.parse(event.data);
     if (json.session_count == undefined) {
         count.innerHTML = "接続人数" + json.session_count_load + "人";
+        if (json.sessionId != undefined) {
+            mySessionId = json.sessionId;
+        }
     } else {
         count.innerHTML = "接続人数" + json.session_count + "人";
         switch (json.mode) {
@@ -31,7 +35,7 @@ webSocket.onmessage = function (event) {
                 }
                 break;
             case "chat":
-                appendChat(json.text, false);
+                appendChat(json.text, (json.sessionId == mySessionId));
                 break;
             case "fill":
                 ctx.globalAlpha = json.alpha;
@@ -61,10 +65,7 @@ function sendChat() {
     if (text == undefined || text == "") return;
     o.text = (user == undefined || user == "" ? "匿名" : user) + "<br>" + text.replace("<", "&lt;").replace(">", "&gt;");
     webSocket.send(JSON.stringify(o));
-    appendChat(o.text, true);
+    // appendChat(o.text, true);
     chatText.value = "";
 }
 
-function sendWebSocket(obj) {
-    webSocket.send(JSON.stringify(obj));
-}
