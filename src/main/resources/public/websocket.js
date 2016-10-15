@@ -80,7 +80,7 @@ function sendChat() {
 }
 
 function send(object) {
-    if (webSocket.readyState != 3) {
+    if (webSocket != undefined && webSocket.readyState != 3) {
         webSocket.send(JSON.stringify(object));
     } else {
         object.sessionCount = 1;
