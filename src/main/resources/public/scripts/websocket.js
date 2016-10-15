@@ -35,7 +35,7 @@ webSocket.onmessage = function (event) {
                 }
                 break;
             case "chat":
-                appendChat(json.text, (json.sessionId == mySessionId));
+                appendChat(json.text, json.sessionId, (json.sessionId == mySessionId));
                 break;
             case "fill":
                 ctx.globalAlpha = json.alpha;

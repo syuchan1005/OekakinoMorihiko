@@ -17,10 +17,13 @@ document.onkeydown = function (e) {
 
 var chat_list = document.getElementById("chatcontentlist");
 
-function appendChat(text, self) {
+function appendChat(text, sessionId, self) {
+    var split = text.split("<br>");
     var ele = document.createElement("article");
     ele.id = self ? "mychatcontent" : "chatcontent";
-    ele.innerHTML = lineWrap(text, 21);
+    ele.innerHTML = "<span>" + split[0] + "</span>" +
+        "<span id='subChatContent'>" + "id:" + sessionId + "</span>" +
+        "<div>" + lineWrap(split[1], 21) + "</div>";
     chat_list.insertBefore(ele, chat_list.firstChild);
 }
 
