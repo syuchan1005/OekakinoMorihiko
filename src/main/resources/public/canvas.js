@@ -14,6 +14,29 @@ var fill = false;
 canvas.addEventListener('mousemove', onMove, false);
 canvas.addEventListener('mousedown', onClick, false);
 
+
+if (window.TouchEvent) {
+    canvas.addEventListener('touchstart', onTouchClick, false);
+    canvas.addEventListener('touchmove', onTouchMove, false);
+}
+
+function onTouchMove(e) {
+    e.preventDefault();
+    var touches = e.touches.item(0);
+    var rect = e.target.getBoundingClientRect();
+    var X = ~~(touches.clientX - rect.left);
+    var Y = ~~(touches.clientY - rect.top);
+    sendDraw("paint", size, color, alpha, X, Y);
+}
+
+function onTouchClick(e) {
+    var touches = e.touches.item(0);
+    var rect = e.target.getBoundingClientRect();
+    var X = ~~(touches.clientX - rect.left);
+    var Y = ~~(touches.clientY - rect.top);
+    clickProcess(X, Y);
+}
+
 function onMove(e) {
     if (e.buttons === 1 || e.witch === 1) {
         var rect = e.target.getBoundingClientRect();
@@ -28,17 +51,21 @@ function onClick(e) {
         var rect = e.target.getBoundingClientRect();
         var X = ~~(e.clientX - rect.left);
         var Y = ~~(e.clientY - rect.top);
-        if (spoit) {
-            var spoitImage = ctx.getImageData(X, Y, 1, 1);
-            colorInput.value = toColorCode(spoitImage.data[0], spoitImage.data[1], spoitImage.data[2]);
-            onInputColor();
-            spoit = false;
-        } else if (fill) {
-            fill = false;
-            sendDraw("fill", 0, color, alpha, X, Y);
-        } else {
-            sendDraw("paint", size, color, alpha, X, Y);
-        }
+        clickProcess(X, Y);
+    }
+}
+
+function clickProcess(X, Y) {
+    if (spoit) {
+        var spoitImage = ctx.getImageData(X, Y, 1, 1);
+        colorInput.value = toColorCode(spoitImage.data[0], spoitImage.data[1], spoitImage.data[2]);
+        onInputColor();
+        spoit = false;
+    } else if (fill) {
+        fill = false;
+        sendDraw("fill", 0, color, alpha, X, Y);
+    } else {
+        sendDraw("paint", size, color, alpha, X, Y);
     }
 }
 
