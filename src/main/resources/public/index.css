@@ -47,13 +47,18 @@ body {
 
 #chatcontentlist {
     overflow-y: scroll;
-    height: 650px;
+    height: 640px;
 }
 
 #subChatContent {
     font-size: 70%;
     color: #555555;
     margin-left: 5px;
+}
+
+#modeicon {
+    float: left;
+    background-color: #e74c3c;
 }
 
 input[type="color"] {

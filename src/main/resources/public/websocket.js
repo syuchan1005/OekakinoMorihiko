@@ -5,27 +5,38 @@ var keepAlive;
 var mySessionId;
 var webSocket = new WebSocket("ws://" + location.hostname + ":" + location.port + "/web/");
 
+var modeIcon = document.getElementById("modeicon");
+var modeText = document.getElementById("modetext");
+
 webSocket.onopen = function (event) {
     keepAlive = setInterval(function () {
         webSocket.send("Keep-Alive");
     }, 150000);
+    modeIcon.style.backgroundColor = "#00e676";
+    modeText.innerHTML = "OnlineMode";
 };
 
 webSocket.onclose = function (event) {
     clearInterval(keepAlive);
-    alert("WebSocket connection closed")
+    appendChat("Admin<br>WebSocket connection closed", "admin", true);
+    modeIcon.style.backgroundColor = "#e74c3c";
+    modeText.innerHTML = "OfflineMode";
+};
+
+webSocket.onmessage = function (event) {
+    onMessageProcess(JSON.parse(event.data));
 };
 
 var count = document.getElementById("sessioncount");
-webSocket.onmessage = function (event) {
-    var json = JSON.parse(event.data);
+
+function onMessageProcess(json) {
     if (json.selfSessionId != undefined) {
         mySessionId = json.selfSessionId;
     }
-    if (json.session_count == undefined) {
-        count.innerHTML = "接続人数" + json.session_count_load + "人";
+    if (json.sessionCount == undefined) {
+        count.innerHTML = "接続人数" + json.sessionCountLoad + "人";
     } else {
-        count.innerHTML = "接続人数" + json.session_count + "人";
+        count.innerHTML = "接続人数" + json.sessionCount + "人";
         switch (json.mode) {
             case "paint":
                 if (json.size == "AllClear") {
@@ -44,7 +55,7 @@ webSocket.onmessage = function (event) {
                 break;
         }
     }
-};
+}
 
 function sendDraw(Mode, Size, Color, Alpha, X, Y) {
     var json = new Object();
@@ -54,18 +65,27 @@ function sendDraw(Mode, Size, Color, Alpha, X, Y) {
     json.alpha = Alpha;
     json.x = X;
     json.y = Y;
-    webSocket.send(JSON.stringify(json));
+    send(json);
 }
 
 function sendChat() {
-    var o = new Object();
-    o.mode = "chat";
+    var json = new Object();
+    json.mode = "chat";
     var user = chatUserText.value;
     var text = chatText.value;
     if (text == undefined || text == "") return;
-    o.text = (user == undefined || user == "" ? "匿名" : user) + "<br>" + text.replace("<", "&lt;").replace(">", "&gt;");
-    webSocket.send(JSON.stringify(o));
-    // appendChat(o.text, true);
+    json.text = (user == undefined || user == "" ? "匿名" : user) + "<br>" + text.replace("<", "&lt;").replace(">", "&gt;");
+    send(json);
     chatText.value = "";
+}
+
+function send(object) {
+    if (webSocket.readyState != 3) {
+        webSocket.send(JSON.stringify(object));
+    } else {
+        object.sessionCount = 1;
+        object.sessionId = 1;
+        onMessageProcess(object);
+    }
 }
 

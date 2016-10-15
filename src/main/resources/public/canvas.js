@@ -120,11 +120,7 @@ function canvasMenu() {
         colorInput.value = color;
     } else if (thisId.indexOf("clear") + 1) {
         if (confirm("すべて消去しますか？")) {
-            var o = new Object();
-            o.mode = "paint";
-            o.size = "AllClear";
-            webSocket.send(JSON.stringify(o));
-            canvasClear();
+            sendDraw("paint", "AllClear");
         }
     } else if (thisId.indexOf("spoit") + 1) {
         if (fill) fill = false;

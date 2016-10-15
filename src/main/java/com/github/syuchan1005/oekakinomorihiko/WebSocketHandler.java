@@ -23,9 +23,6 @@ public class WebSocketHandler {
 	private static long id = 1;
 	private static Map<Session, Long> sessions = Collections.synchronizedMap(new HashMap<>());
 	private static ObjectMapper mapper = new ObjectMapper();
-	private static TypeReference<HashMap<String, Object>> reference = new TypeReference<HashMap<String, Object>>() {
-	};
-
 	static {
 		mapper.registerModule(new JsonOrgModule());
 	}
@@ -34,7 +31,7 @@ public class WebSocketHandler {
 	public void onConnect(Session session) throws Exception {
 		sessions.put(session, id);
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("session_count_load", sessions.size());
+		jsonObject.put("sessionCountLoad", sessions.size());
 		broadcastMessage(jsonObject.toString());
 		jsonObject.put("selfSessionId", id);
 		session.getRemote().sendString(jsonObject.toString());
@@ -45,7 +42,7 @@ public class WebSocketHandler {
 	public void onClose(Session session, int statusCode, String reason) throws Exception {
 		sessions.remove(session);
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("session_count_load", sessions.size());
+		jsonObject.put("sessionCountLoad", sessions.size());
 		jsonObject.put("sessionId", sessions.get(session));
 		broadcastMessage(jsonObject.toString());
 	}
@@ -54,7 +51,7 @@ public class WebSocketHandler {
 	public void onMessage(Session session, String message) throws Exception {
 		if (message.equals("Keep-Alive")) return;
 		JSONObject jsonObject = mapper.readValue(message, JSONObject.class);
-		jsonObject.put("session_count", sessions.size());
+		jsonObject.put("sessionCount", sessions.size());
 		jsonObject.put("sessionId", sessions.get(session));
 		broadcastMessage(jsonObject.toString());
 	}

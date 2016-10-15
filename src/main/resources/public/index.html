@@ -21,7 +21,13 @@
                 <input id="chattext" type="text" placeholder="送りたい文章を入力してください">
                 <input id="chatsend" type="button" value="送信">
                 <div id="chatcontentlist">
-                    <!-- Javascript <article class="chat_content">Test</article> -->
+                    <!-- Javascript
+                    <article class="chat_content">
+                        <span>匿名<span>
+                        <span id='subChatContent'>id:123456789</span>
+                        <div>ないよう</div>
+                    </article>
+                    -->
                 </div>
             </div>
             <input type="button" id="downloadPng" value="DownloadPNG">
@@ -38,6 +44,9 @@
                 <input type="color" id="color" list="colors" value="#555555">
                 <input type="text" class="menuicon" id="alphavalue" value="10.0" readonly>
                 <input type="range" class="menuicon" id="alpha" value="100">
+
+                <div class="menuicon" id="modeicon"></div>
+                <div style="float: left;" id="modetext">OfflineMode</div>
             </div>
         </td>
         <td>
