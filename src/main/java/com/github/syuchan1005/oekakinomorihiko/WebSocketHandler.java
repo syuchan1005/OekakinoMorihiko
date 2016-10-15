@@ -36,7 +36,7 @@ public class WebSocketHandler {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("session_count_load", sessions.size());
 		broadcastMessage(jsonObject.toString());
-		jsonObject.put("sessionId", id);
+		jsonObject.put("selfSessionId", id);
 		session.getRemote().sendString(jsonObject.toString());
 		id += 1;
 	}

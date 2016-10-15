@@ -19,11 +19,11 @@ webSocket.onclose = function (event) {
 var count = document.getElementById("sessioncount");
 webSocket.onmessage = function (event) {
     var json = JSON.parse(event.data);
+    if (json.selfSessionId != undefined) {
+        mySessionId = json.sessionId;
+    }
     if (json.session_count == undefined) {
         count.innerHTML = "接続人数" + json.session_count_load + "人";
-        if (json.sessionId != undefined) {
-            mySessionId = json.sessionId;
-        }
     } else {
         count.innerHTML = "接続人数" + json.session_count + "人";
         switch (json.mode) {
