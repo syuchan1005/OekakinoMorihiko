@@ -47,6 +47,7 @@ body {
 
 #chatcontentlist {
     overflow-y: scroll;
+    width: 220px;
     height: 640px;
 }
 

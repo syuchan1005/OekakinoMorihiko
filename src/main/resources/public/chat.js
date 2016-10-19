@@ -17,39 +17,13 @@ document.onkeydown = function (e) {
 
 var chat_list = document.getElementById("chatcontentlist");
 
-function appendChat(text, sessionId, self) {
+function appendChat(text, sessionId, self, warp) {
+    warp = warp || true;
     var split = text.split("<br>");
     var ele = document.createElement("article");
     ele.id = self ? "mychatcontent" : "chatcontent";
     ele.innerHTML = "<span>" + split[0] + "</span>" +
         "<span id='subChatContent'>" + "id:" + sessionId + "</span>" +
-        "<div>" + lineWrap(split[1], 21) + "</div>";
+        "<div>" + split[1] + "</div>";
     chat_list.insertBefore(ele, chat_list.firstChild);
-}
-
-function lineWrap(text, maxlength) {
-    var resultText = [""];
-    var len = text.length;
-    if (maxlength >= len) {
-        return text;
-    }
-    else {
-        var totalStrCount = parseInt(len / maxlength);
-        if (len % maxlength != 0) {
-            totalStrCount++
-        }
-
-        for (var i = 0; i < totalStrCount; i++) {
-            if (i == totalStrCount - 1) {
-                resultText.push(text);
-            }
-            else {
-                var strPiece = text.substring(0, maxlength - 1);
-                resultText.push(strPiece);
-                resultText.push("<br>");
-                text = text.substring(maxlength - 1, text.length);
-            }
-        }
-    }
-    return resultText.join("");
 }
