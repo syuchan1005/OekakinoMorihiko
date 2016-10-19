@@ -13,14 +13,15 @@ webSocket.onopen = function (event) {
         webSocket.send("Keep-Alive");
     }, 150000);
     modeIcon.style.backgroundColor = "#00e676";
-    modeText.innerHTML = "OnlineMode";
+    modeText.innerHTML = "Server online";
 };
 
 webSocket.onclose = function (event) {
     clearInterval(keepAlive);
-    appendChat("Admin<br>WebSocket connection closed", "admin", true);
+    appendChat("Application<br>WebSocket connection closed.", "application", true);
+    count.innerHTML = "サーバーに接続できません";
     modeIcon.style.backgroundColor = "#e74c3c";
-    modeText.innerHTML = "OfflineMode";
+    modeText.innerHTML = "Server offline";
 };
 
 webSocket.onmessage = function (event) {
@@ -34,9 +35,9 @@ function onMessageProcess(json) {
         mySessionId = json.selfSessionId;
     }
     if (json.sessionCount == undefined) {
-        count.innerHTML = "接続人数" + json.sessionCountLoad + "人";
+        count.innerHTML = "接続人数: " + json.sessionCountLoad + "人";
     } else {
-        count.innerHTML = "接続人数" + json.sessionCount + "人";
+        count.innerHTML = "接続人数: " + json.sessionCount + "人";
         switch (json.mode) {
             case "paint":
                 if (json.size == "AllClear") {

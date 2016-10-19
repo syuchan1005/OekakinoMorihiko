@@ -1,8 +1,3 @@
-var canvas = document.getElementById("main_canvas");
-var ctx = canvas.getContext('2d');
-
-canvasClear();
-
 //初期値（サイズ、色、アルファ値、マウス）の決定
 var size = 5;
 var color = "#555555";
@@ -11,54 +6,53 @@ var alpha = 1.0;
 var spoit = false;
 var fill = false;
 
-canvas.addEventListener('mousemove', onMove, false);
-canvas.addEventListener('mousedown', onClick, false);
+var canvas = document.getElementById("main_canvas");
+var ctx = canvas.getContext('2d');
 
+// canvas初期化
+canvasClear();
 
-if (window.TouchEvent) {
-    canvas.addEventListener('touchstart', onTouchClick, false);
-    canvas.addEventListener('touchmove', onTouchMove, false);
-}
-
-function onTouchMove(e) {
-    e.preventDefault();
-    var touches = e.touches.item(0);
-    var rect = e.target.getBoundingClientRect();
-    var X = ~~(touches.clientX - rect.left);
-    var Y = ~~(touches.clientY - rect.top);
-    sendDraw("paint", size, color, alpha, X, Y);
-}
-
-function onTouchClick(e) {
-    var touches = e.touches.item(0);
-    var rect = e.target.getBoundingClientRect();
-    var X = ~~(touches.clientX - rect.left);
-    var Y = ~~(touches.clientY - rect.top);
-    clickProcess(X, Y);
-}
-
-function onMove(e) {
+// イベントリスナ
+canvas.addEventListener('mousemove', function (e) {
     if (e.buttons === 1 || e.witch === 1) {
         var rect = e.target.getBoundingClientRect();
         var X = ~~(e.clientX - rect.left);
         var Y = ~~(e.clientY - rect.top);
         sendDraw("paint", size, color, alpha, X, Y);
     }
-}
-
-function onClick(e) {
+}, false);
+canvas.addEventListener('mousedown', function (e) {
     if (e.button === 0) {
         var rect = e.target.getBoundingClientRect();
         var X = ~~(e.clientX - rect.left);
         var Y = ~~(e.clientY - rect.top);
         clickProcess(X, Y);
     }
+}, false);
+
+
+if (window.TouchEvent) {
+    canvas.addEventListener('touchstart', function (e) {
+        var touches = e.touches.item(0);
+        var rect = e.target.getBoundingClientRect();
+        var X = ~~(touches.clientX - rect.left);
+        var Y = ~~(touches.clientY - rect.top);
+        clickProcess(X, Y);
+    }, false);
+    canvas.addEventListener('touchmove', function (e) {
+        e.preventDefault();
+        var touches = e.touches.item(0);
+        var rect = e.target.getBoundingClientRect();
+        var X = ~~(touches.clientX - rect.left);
+        var Y = ~~(touches.clientY - rect.top);
+        sendDraw("paint", size, color, alpha, X, Y);
+    }, false);
 }
 
 function clickProcess(X, Y) {
     if (spoit) {
         var spoitImage = ctx.getImageData(X, Y, 1, 1);
-        colorInput.value = toColorCode(spoitImage.data[0], spoitImage.data[1], spoitImage.data[2]);
+        colorInput.value = '#' + (((256 + spoitImage.data[0] << 8) + spoitImage.data[1] << 8) + spoitImage.data[2]).toString(16).slice(1);
         onInputColor();
         spoit = false;
     } else if (fill) {
@@ -69,15 +63,12 @@ function clickProcess(X, Y) {
     }
 }
 
-function toColorCode(r, g, b) {
-    return '#' + (((256 + r << 8) + g << 8) + b).toString(16).slice(1);
-}
-
 function draw(Size, Color, Alpha, X, Y) {
+    var diffSize = Size / 2;
     ctx.beginPath();
     ctx.globalAlpha = Alpha;
     ctx.fillStyle = Color;
-    ctx.arc(X, Y, Size, 0, Math.PI * 2, false);
+    ctx.arc(X - diffSize, Y - diffSize, Size, 0, Math.PI * 2, false);
     ctx.fill();
 }
 
@@ -97,8 +88,7 @@ function openCanvasPng() {
     for (var i = 0; i < bin.length; i++) {
         buffer[i] = bin.charCodeAt(i);
     }
-    var url = window.URL.createObjectURL(new Blob([buffer.buffer], {type: type}));
-    window.open(url);
+    window.open(window.URL.createObjectURL(new Blob([buffer.buffer], {type: type})));
 }
 
 var mainStyle = document.styleSheets[0];
