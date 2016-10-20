@@ -171,6 +171,7 @@ function canvasMenu() {
     if (thisId.indexOf("color") + 1) {
         color = "#" + this.id.slice(5, this.id.length);
         colorInput.value = color;
+        onInputColor();
     } else if (thisId.indexOf("clear") + 1) {
         if (confirm("すべて消去しますか？")) {
             sendDraw("paint", "AllClear");
