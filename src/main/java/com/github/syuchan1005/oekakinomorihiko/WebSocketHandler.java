@@ -34,7 +34,7 @@ public class WebSocketHandler {
 		jsonObject.put("sessionCountLoad", sessions.size());
 		broadcastMessage(jsonObject.toString());
 		jsonObject.put("selfSessionId", id);
-		session.getRemote().sendString(jsonObject.toString());
+		session.getRemote().sendStringByFuture(jsonObject.toString());
 		id += 1;
 	}
 
@@ -61,11 +61,7 @@ public class WebSocketHandler {
 		sessions.keySet().stream()
 				.filter(Session::isOpen)
 				.forEach(s -> {
-					try {
-						s.getRemote().sendString(message);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+					s.getRemote().sendStringByFuture(message);
 				});
 	}
 }
