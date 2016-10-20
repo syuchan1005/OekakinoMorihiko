@@ -50,7 +50,10 @@ public class WebSocketHandler {
 
 	@OnWebSocketMessage
 	public void onMessage(Session session, String message) throws Exception {
-		if (message.equals("Keep-Alive")) return;
+		if (message.equals("KeepAlive")) {
+			session.getRemote().sendStringByFuture("KeepAlive");
+			return;
+		}
 		JSONObject jsonObject = mapper.readValue(message, JSONObject.class);
 		jsonObject.put("sessionCount", sessions.size());
 		jsonObject.put("sessionId", sessions.get(session));

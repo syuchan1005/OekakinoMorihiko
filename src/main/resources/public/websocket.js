@@ -10,7 +10,8 @@ var modeText = document.getElementById("modetext");
 
 webSocket.onopen = function (event) {
     keepAlive = setInterval(function () {
-        webSocket.send("Keep-Alive");
+        console.log("keepAlive");
+        webSocket.send("KeepAlive");
     }, 150000);
     modeIcon.style.backgroundColor = "#00e676";
     modeText.innerHTML = "Server online";
@@ -25,6 +26,7 @@ webSocket.onclose = function (event) {
 };
 
 webSocket.onmessage = function (event) {
+    if (event.date == "KeepAlive") return;
     onMessageProcess(JSON.parse(event.data));
 };
 
