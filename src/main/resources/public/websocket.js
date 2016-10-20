@@ -42,8 +42,10 @@ function onMessageProcess(json) {
             case "paint":
                 if (json.size == "AllClear") {
                     canvasClear();
+                } else if (json.size == "DrawEnd"){
+                    drawEnd(json.sessionId);
                 } else {
-                    draw(json.size, json.color, json.alpha, json.x, json.y);
+                    draw(json.sessionId, json.size, json.color, json.alpha, json.x, json.y);
                 }
                 break;
             case "chat":
@@ -53,6 +55,9 @@ function onMessageProcess(json) {
                 ctx.globalAlpha = json.alpha;
                 ctx.fillStyle = json.color;
                 ctx.fillFlood(json.x, json.y, 40);
+                break;
+            case "close":
+                removeDraw(json.sessionId);
                 break;
         }
     }

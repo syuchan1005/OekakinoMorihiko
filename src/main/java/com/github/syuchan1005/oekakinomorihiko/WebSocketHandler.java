@@ -42,6 +42,7 @@ public class WebSocketHandler {
 	public void onClose(Session session, int statusCode, String reason) throws Exception {
 		sessions.remove(session);
 		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("mode", "close");
 		jsonObject.put("sessionCountLoad", sessions.size());
 		jsonObject.put("sessionId", sessions.get(session));
 		broadcastMessage(jsonObject.toString());

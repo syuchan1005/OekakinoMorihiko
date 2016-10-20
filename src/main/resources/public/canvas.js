@@ -9,6 +9,8 @@ var fill = false;
 var canvas = document.getElementById("main_canvas");
 var ctx = canvas.getContext('2d');
 
+var locations = new Array();
+
 // canvas初期化
 canvasClear();
 
@@ -29,7 +31,8 @@ canvas.addEventListener('mousedown', function (e) {
         clickProcess(X, Y);
     }
 }, false);
-
+canvas.addEventListener('mouseup', sendDrawEnd, false);
+canvas.addEventListener('mouseout', sendDrawEnd, false);
 
 if (window.TouchEvent) {
     canvas.addEventListener('touchstart', function (e) {
@@ -47,6 +50,12 @@ if (window.TouchEvent) {
         var Y = ~~(touches.clientY - rect.top);
         sendDraw("paint", size, color, alpha, X, Y);
     }, false);
+    canvas.addEventListener('touchend', sendDrawEnd, false);
+    canvas.addEventListener('touchcancel', sendDrawEnd, false);
+}
+
+function sendDrawEnd() {
+    sendDraw("paint", "DrawEnd");
 }
 
 function clickProcess(X, Y) {
@@ -63,13 +72,38 @@ function clickProcess(X, Y) {
     }
 }
 
-function draw(Size, Color, Alpha, X, Y) {
+function draw(sessionId, Size, Color, Alpha, X, Y) {
     var diffSize = Size / 2;
     ctx.beginPath();
     ctx.globalAlpha = Alpha;
-    ctx.fillStyle = Color;
-    ctx.arc(X - diffSize, Y - diffSize, Size, 0, Math.PI * 2, false);
+    ctx.strokeStyle = Color;
+    if (locations[sessionId] == undefined) {
+        locations[sessionId] = new Object();
+    }
+    var location = locations[sessionId];
+    location.X1 = location.X1 || X;
+    location.Y1 = location.Y1 || Y;
+    ctx.lineWidth = Size;
+    ctx.lineCap = 'round';
+    ctx.moveTo(location.X1, location.Y1);
+    ctx.lineTo(X, Y);
+    ctx.stroke();
+    location.X1 = X;
+    location.Y1 = Y;
     ctx.fill();
+}
+
+function drawEnd(sessionId) {
+    if (locations[sessionId] == undefined) {
+        locations[sessionId] = new Object();
+    }
+    var location = locations[sessionId];
+    location.X1 = "";
+    location.Y1 = "";
+}
+
+function removeDraw(sessionId) {
+    locations[sessionId] = undefined;
 }
 
 function canvasClear() {
@@ -106,7 +140,7 @@ function onInputSize() {
     mainStyle.addRule('input[type="range"]#size::-webkit-slider-thumb:hover', "border-radius: " + size + "px;");
     mainStyle.addRule('input[type="range"]#size::-webkit-slider-thumb:active', "border-radius: " + size + "px;");
 }
-
+onInputSize();
 
 //color処理
 var colorInput = document.getElementById("color");
@@ -115,6 +149,7 @@ function onInputColor() {
     color = colorInput.value;
     mainStyle.addRule('input[type="range"]#size::-webkit-slider-thumb', "background-color: " + color + ";");
 }
+onInputColor();
 
 // alpha処理
 var range = document.getElementById("alpha");
@@ -124,6 +159,7 @@ function onInputRange() {
     alpha = range.value / 100.0;
     rangeValue.value = Math.floor(alpha * 10);
 }
+onInputRange();
 
 // メニュー処理
 var menuIcon = document.getElementsByClassName("menuicon");
