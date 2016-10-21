@@ -35,11 +35,13 @@ public class WebSocketHandler {
 		broadcastMessage(jsonObject.toString());
 		jsonObject.put("selfSessionId", id);
 		session.getRemote().sendStringByFuture(jsonObject.toString());
+		System.out.println("Connect:{ ID: " + id + " }");
 		id += 1;
 	}
 
 	@OnWebSocketClose
 	public void onClose(Session session, int statusCode, String reason) throws Exception {
+		System.out.println("Close:{ ID: " + sessions.get(session) + " }");
 		sessions.remove(session);
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("mode", "close");

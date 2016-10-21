@@ -63,17 +63,36 @@ function clickProcess(X, Y) {
         var spoitImage = ctx.getImageData(X, Y, 1, 1);
         colorInput.value = '#' + (((256 + spoitImage.data[0] << 8) + spoitImage.data[1] << 8) + spoitImage.data[2]).toString(16).slice(1);
         onInputColor();
-        spoit = false;
+        toggleSpoit();
     } else if (fill) {
-        fill = false;
+        toggleFill();
         sendDraw("fill", 0, color, alpha, X, Y);
     } else {
         sendDraw("paint", size, color, alpha, X, Y);
     }
 }
 
+var fillButton = document.getElementById("fill");
+var spoitButton = document.getElementById("spoit");
+function toggleFill() {
+    if (!fill) {
+        fillButton.style.border = "1px solid #00BFFF";
+    } else {
+        fillButton.style.border = "none";
+    }
+    fill = !fill;
+}
+
+function toggleSpoit() {
+    if (!spoit) {
+        spoitButton.style.border = "1px solid #00BFFF";
+    } else {
+        spoitButton.style.border = "none";
+    }
+    spoit = !spoit;
+}
+
 function draw(sessionId, Size, Color, Alpha, X, Y) {
-    var diffSize = Size / 2;
     ctx.beginPath();
     ctx.globalAlpha = Alpha;
     ctx.strokeStyle = Color;
@@ -177,11 +196,11 @@ function canvasMenu() {
             sendDraw("paint", "AllClear");
         }
     } else if (thisId.indexOf("spoit") + 1) {
-        if (fill) fill = false;
-        spoit = true;
+        if (fill) toggleFill();
+        toggleSpoit();
     } else if (thisId.indexOf("fill") + 1) {
-        if (spoit) spoit = false;
-        fill = true;
+        if (spoit) toggleSpoit();
+        toggleFill();
     }
 }
 

@@ -6,6 +6,7 @@ body {
 
 #main_canvas {
     border: 5px solid #e6e6e6;
+    cursor: default;
 }
 
 .menuicon {
