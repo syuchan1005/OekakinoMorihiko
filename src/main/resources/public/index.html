@@ -11,7 +11,9 @@
 	<table border="double">
 		<tr>
 			<td>
-				<canvas width="1280" height="720" id="main_canvas"></canvas>
+				<div id="canvases" width="1280" height="720">
+					<canvas width="1280" height="720" id="main_canvas"></canvas>
+				</div>
 			</td>
 			<td style="vertical-align: top">
 				<div style="margin-bottom: 10px">
@@ -42,8 +44,10 @@
 				<div id="canvasmenu">
 					<div class="menuicon" id="clear">×</div>
 					<div class="menuicon" id="colorf5f5f5">消</div>
-					<div class="menuicon" id="spoit">ス</div>
-					<div class="menuicon" id="fill">塗</div>
+					<div class="menuicon selectable" id="spoit">ス</div>
+					<div class="menuicon selectable" id="fill">塗</div>
+					<div class="menuicon selectable special" id="square">□</div>
+					<div class="menuicon selectable special" id="circle">◯</div>
 					<input type="range" class="menuicon" id="size" value="20" min="20" max="100">
 					<input type="color" id="color" list="colors" value="#555555">
 					<input type="text" class="menuicon" id="alphavalue" value="10" readonly>

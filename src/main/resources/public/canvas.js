@@ -3,16 +3,15 @@ var size = 5;
 var color = "#555555";
 var alpha = 1.0;
 
-var spoit = false;
-var fill = false;
-
 var canvas = document.getElementById("main_canvas");
 var ctx = canvas.getContext('2d');
 
 var locations = new Array();
 
+var selectId;
+
 // canvas初期化
-canvasClear();
+clearCanvas();
 
 // イベントリスナ
 canvas.addEventListener('mousemove', function (e) {
@@ -59,37 +58,30 @@ function sendDrawEnd() {
 }
 
 function clickProcess(X, Y) {
-    if (spoit) {
-        var spoitImage = ctx.getImageData(X, Y, 1, 1);
-        colorInput.value = '#' + (((256 + spoitImage.data[0] << 8) + spoitImage.data[1] << 8) + spoitImage.data[2]).toString(16).slice(1);
-        onInputColor();
-        toggleSpoit();
-    } else if (fill) {
-        toggleFill();
-        sendDraw("fill", 0, color, alpha, X, Y);
+    if (selectId != undefined) {
+        switch (selectId) {
+            case "spoit":
+                var spoitImage = ctx.getImageData(X, Y, 1, 1);
+                colorInput.value = '#' + (((256 + spoitImage.data[0] << 8) + spoitImage.data[1] << 8) + spoitImage.data[2]).toString(16).slice(1);
+                onInputColor();
+                break;
+            case "fill":
+                sendDraw("fill", 0, color, alpha, X, Y);
+                break;
+        }
+        toggleSelectable(undefined);
     } else {
         sendDraw("paint", size, color, alpha, X, Y);
     }
 }
 
-var fillButton = document.getElementById("fill");
-var spoitButton = document.getElementById("spoit");
-function toggleFill() {
-    if (!fill) {
-        fillButton.style.border = "1px solid #00BFFF";
-    } else {
-        fillButton.style.border = "none";
+function toggleSelectable(id) {
+    var list = document.getElementsByClassName("selectable");
+    for (var i = 0; i < list.length; i++) {
+        list[i].style.border = "1px solid #dddddd";
     }
-    fill = !fill;
-}
-
-function toggleSpoit() {
-    if (!spoit) {
-        spoitButton.style.border = "1px solid #00BFFF";
-    } else {
-        spoitButton.style.border = "none";
-    }
-    spoit = !spoit;
+    if (id != undefined) document.getElementById(id).style.border = "1px solid #00BFFF";
+    selectId = id;
 }
 
 function draw(sessionId, Size, Color, Alpha, X, Y) {
@@ -125,12 +117,40 @@ function removeDraw(sessionId) {
     locations[sessionId] = undefined;
 }
 
-function canvasClear() {
+function clearCanvas() {
     ctx.beginPath();
     ctx.fillStyle = "#f5f5f5";
     ctx.globalAlpha = 1.0;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
+
+function createCoverCanvas(className) {
+    var list = document.getElementsByClassName(className);
+    for (var i = 0; i < list.length; i++) {
+        list[i].parentNode.removeChild(list[i]);
+    }
+    var element = document.createElement("canvas");
+    element.setAttribute("class", className + " coverCanvas");
+    element.style.zIndex = document.getElementsByClassName("coverCanvas").length;
+    element.width = canvas.width;
+    element.height = canvas.height;
+    var context2D = element.getContext("2d");
+    context2D.beginPath();
+    context2D.fillStyle = "#555555";
+    context2D.globalAlpha = 0.5;
+    context2D.fillRect(0, 0, element.width, element.height);
+    return element;
+}
+
+document.onkeydown = function (e) {
+    if (e.keyCode == 27) {
+        var list = document.getElementsByClassName("specialCanvas");
+        for (var i = 0; i < list.length; i++) {
+            list[i].parentNode.removeChild(list[i]);
+        }
+        toggleSelectable(undefined);
+    }
+};
 
 document.getElementById("downloadPng").addEventListener("click", openCanvasPng, false);
 
@@ -186,21 +206,19 @@ for (var i = 0; i < menuIcon.length; i++) {
     menuIcon[i].addEventListener("click", canvasMenu, false)
 }
 function canvasMenu() {
-    var thisId = this.id;
-    if (thisId.indexOf("color") + 1) {
-        color = "#" + this.id.slice(5, this.id.length);
-        colorInput.value = color;
+    if (this.classList.contains("selectable")) {
+        toggleSelectable(this.id);
+        if (this.classList.contains("special")) {
+            var coverCanvas = createCoverCanvas("specialCanvas");
+            document.getElementById("canvases").appendChild(coverCanvas);
+        }
+    } else if (this.id.indexOf("color") + 1) {
+        colorInput.value = "#" + this.id.slice(5, this.id.length);
         onInputColor();
-    } else if (thisId.indexOf("clear") + 1) {
+    } else if (this.id.indexOf("clear") + 1) {
         if (confirm("すべて消去しますか？")) {
             sendDraw("paint", "AllClear");
         }
-    } else if (thisId.indexOf("spoit") + 1) {
-        if (fill) toggleFill();
-        toggleSpoit();
-    } else if (thisId.indexOf("fill") + 1) {
-        if (spoit) toggleSpoit();
-        toggleFill();
     }
 }
 

@@ -43,7 +43,7 @@ function onMessageProcess(json) {
         switch (json.mode) {
             case "paint":
                 if (json.size == "AllClear") {
-                    canvasClear();
+                    clearCanvas();
                 } else if (json.size == "DrawEnd"){
                     drawEnd(json.sessionId);
                 } else {

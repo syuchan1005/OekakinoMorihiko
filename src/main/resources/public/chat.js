@@ -13,7 +13,7 @@ document.onkeydown = function (e) {
             sendChat();
         }
     }
-}
+};
 
 var chat_list = document.getElementById("chatcontentlist");
 

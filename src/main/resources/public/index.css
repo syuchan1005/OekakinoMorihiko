@@ -4,9 +4,21 @@ body {
     -webkit-user-select: none;
 }
 
+#canvases {
+    position: relative;
+    width: 1290px;
+    height: 730px;
+}
+
 #main_canvas {
     border: 5px solid #e6e6e6;
     cursor: default;
+    position: absolute;
+}
+
+.coverCanvas {
+    border: 5px solid #e6e6e6;
+    position: absolute;
 }
 
 .menuicon {
@@ -20,6 +32,10 @@ body {
     cursor: pointer;
     border-radius: 10px;
     margin: 2px;
+}
+
+.selectable {
+    border: 1px solid #dddddd;
 }
 
 #canvasmenu {
