@@ -125,10 +125,6 @@ function clearCanvas() {
 }
 
 function createCoverCanvas(className) {
-    var list = document.getElementsByClassName(className);
-    for (var i = 0; i < list.length; i++) {
-        list[i].parentNode.removeChild(list[i]);
-    }
     var element = document.createElement("canvas");
     element.setAttribute("class", className + " coverCanvas");
     element.style.zIndex = document.getElementsByClassName("coverCanvas").length;
@@ -206,6 +202,10 @@ for (var i = 0; i < menuIcon.length; i++) {
     menuIcon[i].addEventListener("click", canvasMenu, false)
 }
 function canvasMenu() {
+    var list = document.getElementsByClassName("specialCanvas");
+    for (var i = 0; i < list.length; i++) {
+        list[i].parentNode.removeChild(list[i]);
+    }
     if (this.classList.contains("selectable")) {
         toggleSelectable(this.id);
         if (this.classList.contains("special")) {
