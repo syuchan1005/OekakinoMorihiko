@@ -62,17 +62,18 @@ function onMessageProcess(json) {
                 removeDraw(json.sessionId);
                 break;
             case "special":
-                console.log(json);
+                var w = (json.x1 - json.x2) * -1;
+                var h = (json.y1 - json.y2) * -1;
                 ctx.beginPath();
                 ctx.globalAlpha = alpha;
                 ctx.strokeStyle = color;
                 ctx.lineWidth = size;
                 switch (json.option) {
                     case "square":
-                        ctx.strokeRect(json.x1, json.y1, (json.x1 - json.x2) * -1, (json.y1 - json.y2) * -1);
+                        ctx.strokeRect(json.x1, json.y1, w, h);
                         break;
                     case "circle":
-                        ctx.arc(150, 150, 150, 0, Math.PI * 2, true);
+                        ellipse(ctx, json.x1 + w / 2.0, json.y1 + h / 2.0, w, h);
                         break;
                 }
                 ctx.stroke();

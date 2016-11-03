@@ -21,12 +21,14 @@ cCanvas.addEventListener('mousemove', function (e) {
         cCtx.globalAlpha = alpha;
         cCtx.strokeStyle = color;
         cCtx.lineWidth = size;
+        var w = (fLoc.X - X) * -1;
+        var h = (fLoc.Y - Y) * -1;
         switch (selectId) {
             case "square":
-                cCtx.strokeRect(fLoc.X, fLoc.Y, (fLoc.X - X) * -1, (fLoc.Y - Y) * -1);
+                cCtx.strokeRect(fLoc.X, fLoc.Y, w, h);
                 break;
             case "circle":
-                cCtx.arc(150, 150, 150, 0, Math.PI * 2, true);
+                ellipse(cCtx, fLoc.X + w / 2.0, fLoc.Y + h / 2.0, w, h);
                 break;
         }
         cCtx.stroke();
