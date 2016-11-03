@@ -3,7 +3,7 @@
  */
 var keepAlive;
 var mySessionId;
-var webSocket = new WebSocket("ws://" + location.hostname + ":" + location.port + "/web/");
+var webSocket = new WebSocket("wss://" + location.hostname + ":" + location.port + "/web/");
 
 var modeIcon = document.getElementById("modeicon");
 var modeText = document.getElementById("modetext");
