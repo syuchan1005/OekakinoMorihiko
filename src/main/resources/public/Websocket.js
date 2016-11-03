@@ -3,7 +3,7 @@
  */
 var keepAlive;
 var mySessionId;
-var webSocket = new WebSocket("wss://" + location.hostname + ":" + location.port + "/web/");
+var webSocket = new WebSocket((("https:" == document.location.protocol) ? "wss://" : "ws://") + location.hostname + ":" + location.port + "/web/");
 
 var modeIcon = document.getElementById("modeicon");
 var modeText = document.getElementById("modetext");
@@ -44,7 +44,7 @@ function onMessageProcess(json) {
             case "paint":
                 if (json.size == "AllClear") {
                     clearCanvas();
-                } else if (json.size == "DrawEnd"){
+                } else if (json.size == "DrawEnd") {
                     drawEnd(json.sessionId);
                 } else {
                     draw(json.sessionId, json.size, json.color, json.alpha, json.x, json.y);
