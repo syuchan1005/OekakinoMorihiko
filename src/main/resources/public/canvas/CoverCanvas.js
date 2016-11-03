@@ -14,24 +14,7 @@ cCanvas.addEventListener('mousedown', function (e) {
 cCanvas.addEventListener('mousemove', function (e) {
     if (e.buttons === 1 || e.witch === 1) {
         var rect = e.target.getBoundingClientRect();
-        var X = ~~(e.clientX - rect.left);
-        var Y = ~~(e.clientY - rect.top);
-        claerCoverCanvas();
-        cCtx.beginPath();
-        cCtx.globalAlpha = alpha;
-        cCtx.strokeStyle = color;
-        cCtx.lineWidth = size;
-        var w = (fLoc.X - X) * -1;
-        var h = (fLoc.Y - Y) * -1;
-        switch (selectId) {
-            case "square":
-                cCtx.strokeRect(fLoc.X, fLoc.Y, w, h);
-                break;
-            case "circle":
-                ellipse(cCtx, fLoc.X + w / 2.0, fLoc.Y + h / 2.0, w, h);
-                break;
-        }
-        cCtx.stroke();
+        move(~~(e.clientX - rect.left), ~~(e.clientY - rect.top));
     }
 }, false);
 
@@ -46,6 +29,51 @@ cCanvas.addEventListener('mouseup', function (e) {
         noneCoverCanvas();
     }
 }, false);
+
+if (window.TouchEvent) {
+    canvas.addEventListener("touchstart", function (e) {
+        var touches = e.touches.item(0);
+        var rect = e.target.getBoundingClientRect();
+        fLoc.X = ~~(touches.clientX - rect.left);
+        fLoc.Y = ~~(touches.clientY - rect.top);
+    }, false);
+
+    canvas.addEventListener("touchmove", function (e) {
+        e.preventDefault();
+        var touches = e.touches.item(0);
+        var rect = e.target.getBoundingClientRect();move(~~(touches.clientX - rect.left), ~~(touches.clientY - rect.top));
+    }, false);
+
+    canvas.addEventListener("touchend", function (e) {
+        var touches = e.touches.item(0);
+        var rect = e.target.getBoundingClientRect();
+        sendSpecialDraw(selectId,
+            size, color, alpha,
+            fLoc.X, fLoc.Y,
+            ~~(touches.clientX - rect.left), ~~(touches.clientY - rect.top));
+        toggleSelectable(undefined);
+        noneCoverCanvas();
+    }, false);
+}
+
+function move(X, Y) {
+    claerCoverCanvas();
+    cCtx.beginPath();
+    cCtx.globalAlpha = alpha;
+    cCtx.strokeStyle = color;
+    cCtx.lineWidth = size;
+    var w = (fLoc.X - X) * -1;
+    var h = (fLoc.Y - Y) * -1;
+    switch (selectId) {
+        case "square":
+            cCtx.strokeRect(fLoc.X, fLoc.Y, w, h);
+            break;
+        case "circle":
+            ellipse(cCtx, fLoc.X + w / 2.0, fLoc.Y + h / 2.0, w, h);
+            break;
+    }
+    cCtx.stroke();
+}
 
 function claerCoverCanvas() {
     cCtx.clearRect(0, 0, 1280, 720);
