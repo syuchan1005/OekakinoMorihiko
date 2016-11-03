@@ -1,6 +1,7 @@
 var menuIcon = document.getElementsByClassName("menuicon");
 
 for (var i = 0; i < menuIcon.length; i++) {
+    if (menuIcon[i].innerHTML.length != 0) menuIcon[i].style.width = 1.66 * menuIcon[i].innerHTML.length + "em";
     menuIcon[i].addEventListener("click", canvasMenu, false)
 }
 function canvasMenu() {
@@ -40,9 +41,8 @@ function onInputSize() {
     mainStyle.addRule('input[type="range"]#size::-webkit-slider-thumb:hover', "height: " + size + "px;");
     mainStyle.addRule('input[type="range"]#size::-webkit-slider-thumb:active', "width: " + size + "px;");
     mainStyle.addRule('input[type="range"]#size::-webkit-slider-thumb:active', "height: " + size + "px;");
-    size /= 2.0;
-    mainStyle.addRule('input[type="range"]#size::-webkit-slider-thumb:hover', "border-radius: " + size + "px;");
-    mainStyle.addRule('input[type="range"]#size::-webkit-slider-thumb:active', "border-radius: " + size + "px;");
+    mainStyle.addRule('input[type="range"]#size::-webkit-slider-thumb:hover', "border-radius: " + size / 2.0 + "px;");
+    mainStyle.addRule('input[type="range"]#size::-webkit-slider-thumb:active', "border-radius: " + size / 2.0 + "px;");
 }
 onInputSize();
 
@@ -61,6 +61,6 @@ var rangeValue = document.getElementById("alphavalue");
 range.addEventListener("input", onInputRange, false);
 function onInputRange() {
     alpha = range.value / 100.0;
-    rangeValue.value = Math.floor(alpha * 10);
+    rangeValue.value = range.value / 10.0;
 }
 onInputRange();
