@@ -61,6 +61,22 @@ function onMessageProcess(json) {
             case "close":
                 removeDraw(json.sessionId);
                 break;
+            case "special":
+                console.log(json);
+                ctx.beginPath();
+                ctx.globalAlpha = alpha;
+                ctx.strokeStyle = color;
+                ctx.lineWidth = size;
+                switch (json.option) {
+                    case "square":
+                        ctx.strokeRect(json.x1, json.y1, (json.x1 - json.x2) * -1, (json.y1 - json.y2) * -1);
+                        break;
+                    case "circle":
+                        ctx.arc(150, 150, 150, 0, Math.PI * 2, true);
+                        break;
+                }
+                ctx.stroke();
+                break;
         }
     }
 }
@@ -73,6 +89,20 @@ function sendDraw(Mode, Size, Color, Alpha, X, Y) {
     json.alpha = Alpha;
     json.x = X;
     json.y = Y;
+    send(json);
+}
+
+function sendSpecialDraw(Mode, Size, Color, Alpha, X1, Y1, X2, Y2) {
+    var json = new Object();
+    json.mode = "special";
+    json.option = Mode;
+    json.size = Size;
+    json.color = Color;
+    json.alpha = Alpha;
+    json.x1 = X1;
+    json.y1 = Y1;
+    json.x2 = X2;
+    json.y2 = Y2;
     send(json);
 }
 

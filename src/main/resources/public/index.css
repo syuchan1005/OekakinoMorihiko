@@ -10,14 +10,18 @@ body {
     height: 730px;
 }
 
-#main_canvas {
-    border: 5px solid #e6e6e6;
-    cursor: default;
-    position: absolute;
+#mainCanvas {
+    pointer-events: auto;
 }
 
-.coverCanvas {
+#coverCanvas {
+    display: none;
+    pointer-events: none;
+}
+
+.canvas {
     border: 5px solid #e6e6e6;
+    cursor: default;
     position: absolute;
 }
 

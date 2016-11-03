@@ -5,78 +5,86 @@
 		<link rel="stylesheet" href="index.css">
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+		<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha256-/SIrNqv8h6QGKDuNoLGA4iret+kyesCkHGzVUUV0shc=" crossorigin="anonymous"></script>
+		<script src="canvas/Floodfill.js"></script>
+		<script src="canvas/Util.js"></script>
+		<script src="canvas/Draw.js"></script>
 	</head>
 
 	<body>
-	<table border="double">
-		<tr>
-			<td>
-				<div id="canvases" width="1280" height="720">
-					<canvas width="1280" height="720" id="main_canvas"></canvas>
-				</div>
-			</td>
-			<td style="vertical-align: top">
-				<div style="margin-bottom: 10px">
-					<label id="sessioncount">接続中...</label>
-				</div>
-				<div>
-					<label>ユーザー名</label>
-					<input id="username" type="text">
-					<br>
-					<label style="margin-right: 23.75px">テキスト</label>
-					<input id="chattext" type="text">
-					<input id="chatsend" type="button" value="送信">
-					<div id="chatcontentlist">
-						<!-- Javascript
-						<article class="chatcontent">
-							<span>匿名<span>
-							<span id='subChatContent'>id:123456789</span>
-							<div>ないよう</div>
-						</article>
-						-->
+		<table border="double">
+			<tr>
+				<td>
+					<div id="canvases" width="1280" height="720">
+						<canvas width="1280" height="720" class="canvas" id="mainCanvas"></canvas>
+						<canvas width="1280" height="720" class="canvas" id="coverCanvas"></canvas>
 					</div>
-				</div>
-				<input type="button" id="downloadPng" value="DownloadPNG">
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<div id="canvasmenu">
-					<div class="menuicon" id="clear">×</div>
-					<div class="menuicon" id="colorf5f5f5">消</div>
-					<div class="menuicon selectable" id="spoit">ス</div>
-					<div class="menuicon selectable" id="fill">塗</div>
-					<div class="menuicon selectable special" id="square">□</div>
-					<div class="menuicon selectable special" id="circle">◯</div>
-					<input type="range" class="menuicon" id="size" value="20" min="20" max="100">
-					<input type="color" id="color" list="colors" value="#555555">
-					<input type="text" class="menuicon" id="alphavalue" value="10" readonly>
-					<input type="range" class="menuicon" id="alpha" value="100">
+				</td>
+				<td style="vertical-align: top">
+					<div style="margin-bottom: 10px">
+						<label id="sessioncount">接続中...</label>
+					</div>
+					<div>
+						<label>ユーザー名</label>
+						<input id="username" type="text">
+						<br>
+						<label style="margin-right: 23.75px">テキスト</label>
+						<input id="chattext" type="text">
+						<input id="chatsend" type="button" value="送信">
+						<div id="chatcontentlist">
+							<!-- Javascript
+							<article class="chatcontent">
+								<span>匿名<span>
+								<span id='subChatContent'>id:123456789</span>
+								<div>ないよう</div>
+							</article>
+							-->
+						</div>
+					</div>
+					<input type="button" id="downloadPng" value="DownloadPNG">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div id="canvasmenu">
+						<div class="menuicon" id="clear">×</div>
+						<div class="menuicon" id="colorf5f5f5">消</div>
+						<div class="menuicon selectable" id="spoit">ス</div>
+						<div class="menuicon selectable" id="fill">塗</div>
+						<div class="menuicon selectable special" id="square">□</div>
+						<div class="menuicon selectable special" id="circle">◯</div>
+						<input type="range" class="menuicon" id="size" value="20" min="20" max="100">
+						<input type="color" id="color" list="colors" value="#555555">
+						<input type="text" class="menuicon" id="alphavalue" value="10" readonly>
+						<input type="range" class="menuicon" id="alpha" value="100">
 
-					<div class="menuicon" id="modeicon"></div>
-					<div style="float: left;" id="modetext"></div>
-				</div>
-			</td>
-			<td>
-				<p>@syu_chan_1005</p>
-			</td>
-		</tr>
-	</table>
+						<div class="menuicon" id="modeicon"></div>
+						<div style="float: left;" id="modetext"></div>
+					</div>
+				</td>
+				<td>
+					<p>@syu_chan_1005</p>
+				</td>
+			</tr>
+		</table>
 
-	<datalist id="colors">
-		<option value="#637d97"></option>
-		<option value="#63977d"></option>
-		<option value="#7d9763"></option>
-		<option value="#7d6397"></option>
-		<option value="#97637d"></option>
-		<option value="#977d63"></option>
-		<option value="#808080"></option>
-		<option value="#f5f5f5"></option>
-		<option value="#555555"></option>
-	</datalist>
+		<datalist id="colors">
+			<option value="#637d97"></option>
+			<option value="#63977d"></option>
+			<option value="#7d9763"></option>
+			<option value="#7d6397"></option>
+			<option value="#97637d"></option>
+			<option value="#977d63"></option>
+			<option value="#808080"></option>
+			<option value="#f5f5f5"></option>
+			<option value="#555555"></option>
+		</datalist>
 
-	<script src="websocket.js"></script>
-	<script src="chat.js"></script>
-	<script src="canvas.js"></script>
+		<script src="Websocket.js"></script>
+		<script src="Chat.js"></script>
+		<script src="canvas/Menu.js"></script>
+		<script src="canvas/CoverCanvas.js"></script>
+		<script src="canvas/MainCanvas.js"></script>
 	</body>
 </html>
