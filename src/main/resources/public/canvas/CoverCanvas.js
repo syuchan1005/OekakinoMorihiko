@@ -31,26 +31,31 @@ cCanvas.addEventListener('mouseup', function (e) {
 }, false);
 
 if (window.TouchEvent) {
-    canvas.addEventListener("touchstart", function (e) {
+    var eLoc = [];
+
+    cCanvas.addEventListener("touchstart", function (e) {
         var touches = e.touches.item(0);
         var rect = e.target.getBoundingClientRect();
         fLoc.X = ~~(touches.clientX - rect.left);
         fLoc.Y = ~~(touches.clientY - rect.top);
     }, false);
 
-    canvas.addEventListener("touchmove", function (e) {
+    cCanvas.addEventListener("touchmove", function (e) {
         e.preventDefault();
         var touches = e.touches.item(0);
-        var rect = e.target.getBoundingClientRect();move(~~(touches.clientX - rect.left), ~~(touches.clientY - rect.top));
+        var rect = e.target.getBoundingClientRect();
+        eLoc.X = ~~(touches.clientX - rect.left);
+        eLoc.Y = ~~(touches.clientY - rect.top);
+        move(eLoc.X, eLoc.Y);
     }, false);
 
-    canvas.addEventListener("touchend", function (e) {
+    cCanvas.addEventListener("touchend", function (e) {
         var touches = e.touches.item(0);
         var rect = e.target.getBoundingClientRect();
         sendSpecialDraw(selectId,
             size, color, alpha,
             fLoc.X, fLoc.Y,
-            ~~(touches.clientX - rect.left), ~~(touches.clientY - rect.top));
+            eLoc.X, eLoc.Y);
         toggleSelectable(undefined);
         noneCoverCanvas();
     }, false);
