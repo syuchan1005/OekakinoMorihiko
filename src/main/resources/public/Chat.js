@@ -7,14 +7,6 @@ var chatUserText = document.getElementById("username");
 var chatText = document.getElementById("chattext");
 document.getElementById("chatsend").addEventListener("click", sendChat, false);
 
-document.onkeydown = function (e) {
-    if (typeof e.modifiers == 'undefined' ? e.ctrlKey : e.modifiers & Event.CONTROL_MASK) {
-        if (e.which == 13) { //enter
-            sendChat();
-        }
-    }
-};
-
 var chat_list = document.getElementById("chatcontentlist");
 
 function appendChat(text, sessionId, self) {

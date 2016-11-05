@@ -1,6 +1,5 @@
 package com.github.syuchan1005.oekakinomorihiko;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsonorg.JsonOrgModule;
 import org.eclipse.jetty.websocket.api.Session;
@@ -8,12 +7,14 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
+import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * Created by syuchan on 2016/10/11.
@@ -23,6 +24,7 @@ public class WebSocketHandler {
 	private static long id = 1;
 	private static Map<Session, Long> sessions = Collections.synchronizedMap(new HashMap<>());
 	private static ObjectMapper mapper = new ObjectMapper();
+
 	static {
 		mapper.registerModule(new JsonOrgModule());
 	}
@@ -35,6 +37,7 @@ public class WebSocketHandler {
 		broadcastMessage(jsonObject.toString());
 		jsonObject.put("selfSessionId", id);
 		session.getRemote().sendStringByFuture(jsonObject.toString());
+		sendOlderCanvas(session);
 		System.out.println("Connect:{ ID: " + id + " }");
 		id += 1;
 	}
@@ -57,12 +60,44 @@ public class WebSocketHandler {
 			return;
 		}
 		JSONObject jsonObject = mapper.readValue(message, JSONObject.class);
-		jsonObject.put("sessionCount", sessions.size());
-		jsonObject.put("sessionId", sessions.get(session));
-		broadcastMessage(jsonObject.toString());
+		try {
+			Session session1 = getKey(jsonObject.getLong("sendId"));
+			System.out.println(message);
+			session1.getRemote().sendStringByFuture(message);
+		} catch (JSONException e) {
+			jsonObject.put("sessionCount", sessions.size());
+			jsonObject.put("sessionId", sessions.get(session));
+			broadcastMessage(jsonObject.toString());
+		}
 	}
 
-	private void broadcastMessage(String message) {
+	protected Session getKey(long id) {
+		for (Map.Entry<Session, Long> e : sessions.entrySet()) {
+			if (e.getValue() == id) return e.getKey();
+		}
+		return null;
+	}
+
+	protected JSONObject sendOlderCanvas(Session session) {
+		Set<Map.Entry<Session, Long>> entries = sessions.entrySet();
+		if (!entries.isEmpty()) {
+			Optional<Map.Entry<Session, Long>> first = entries.stream()
+					.sorted((o1, o2) -> (int) (o1.getValue() - o2.getValue()))
+					.findFirst();
+			first.ifPresent(entry -> {
+				if (entry.getKey() == session) return;
+				JSONObject jsonObject = new JSONObject();
+				jsonObject.put("sessionCount", sessions.size());
+				jsonObject.put("mode", "canvas");
+				jsonObject.put("option", "send");
+				jsonObject.put("sendId", sessions.get(session));
+				entry.getKey().getRemote().sendStringByFuture(jsonObject.toString());
+			});
+		}
+		return null;
+	}
+
+	protected void broadcastMessage(String message) {
 		sessions.keySet().stream()
 				.filter(Session::isOpen)
 				.forEach(s -> {

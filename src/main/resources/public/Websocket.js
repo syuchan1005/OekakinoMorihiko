@@ -78,12 +78,24 @@ function onMessageProcess(json) {
                 }
                 ctx.stroke();
                 break;
+            case "canvas":
+                switch (json.option) {
+                    case "load":
+                        drawImage(json.text);
+                        break;
+                    case "send":
+                        json.option = "load";
+                        json.text = canvas.toDataURL();
+                        send(json);
+                        break;
+                }
+                break;
         }
     }
 }
 
 function sendDraw(Mode, Size, Color, Alpha, X, Y) {
-    var json = new Object();
+    var json = {};
     json.mode = Mode;
     json.size = Size;
     json.color = Color;
@@ -94,7 +106,7 @@ function sendDraw(Mode, Size, Color, Alpha, X, Y) {
 }
 
 function sendSpecialDraw(Mode, Size, Color, Alpha, X1, Y1, X2, Y2) {
-    var json = new Object();
+    var json = {};
     json.mode = "special";
     json.option = Mode;
     json.size = Size;

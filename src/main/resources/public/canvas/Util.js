@@ -1,11 +1,23 @@
-function openCanvasPng(canvas) {
+function toPNGBinary(canvas) {
     var type = 'image/png';
     var bin = atob(canvas.toDataURL(type).split(',')[1]);
-    var buffer = new Uint8Array(bin.length);
+    var binary = new Uint8Array(bin.length);
     for (var i = 0; i < bin.length; i++) {
-        buffer[i] = bin.charCodeAt(i);
+        binary[i] = bin.charCodeAt(i);
     }
-    window.open(window.URL.createObjectURL(new Blob([buffer.buffer], {type: type})));
+    return binary;
+}
+
+function openCanvasPng() {
+    window.open(window.URL.createObjectURL(new Blob([toPNGBinary(canvas).buffer], {type: 'image/png'})));
+}
+
+function drawImage(data) {
+    var img = new Image();
+    img.onload = function () {
+        ctx.drawImage(img, 0, 0);
+    };
+    img.src = data;
 }
 
 function fillCanvas(context2D, width, height, color, alpha) {

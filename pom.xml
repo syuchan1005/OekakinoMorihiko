@@ -37,7 +37,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>com.github.syuchan1005.sqlbridgeserver.APIServer</mainClass>
+                            <mainClass>com.github.syuchan1005.oekakinomorihiko.OekakinoMorihiko</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

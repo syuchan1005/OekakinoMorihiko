@@ -79,11 +79,4 @@ function clearCanvas() {
     fillCanvas(ctx, canvas.width, canvas.height, "#f5f5f5", 1);
 }
 
-document.onkeydown = function (e) {
-    if (e.keyCode == 27) {
-        noneCoverCanvas();
-        toggleSelectable(undefined);
-    }
-};
-
 document.getElementById("downloadPng").addEventListener("click", openCanvasPng, false);

@@ -86,5 +86,18 @@
 		<script src="canvas/Menu.js"></script>
 		<script src="canvas/CoverCanvas.js"></script>
 		<script src="canvas/MainCanvas.js"></script>
+		<script>
+			document.onkeydown = function (e) {
+				if (typeof e.modifiers == 'undefined' ? e.ctrlKey : e.modifiers & Event.CONTROL_MASK) {
+					if (e.which == 13) { //enter
+						sendChat();
+					}
+				} else if (e.keyCode == 27) {
+					console.info(ctx.getImageData(0, 0, canvas.width, canvas.height));
+					noneCoverCanvas();
+					toggleSelectable(undefined);
+				}
+			};
+		</script>
 	</body>
 </html>
