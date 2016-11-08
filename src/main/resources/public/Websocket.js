@@ -26,7 +26,7 @@ webSocket.onclose = function (event) {
 };
 
 webSocket.onmessage = function (event) {
-    if (event.date == "KeepAlive") return;
+    if (event.data == "keepAlive") return;
     onMessageProcess(JSON.parse(event.data));
 };
 

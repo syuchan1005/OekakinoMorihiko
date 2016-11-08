@@ -37,7 +37,7 @@ public class WebSocketHandler {
 		broadcastMessage(jsonObject.toString());
 		jsonObject.put("selfSessionId", id);
 		session.getRemote().sendStringByFuture(jsonObject.toString());
-		sendOlderCanvas(session);
+		// sendOlderCanvas(session);
 		System.out.println("Connect:{ ID: " + id + " }");
 		id += 1;
 	}
