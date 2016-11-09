@@ -23,17 +23,22 @@
 						<canvas width="1280" height="720" class="canvas" id="coverCanvas"></canvas>
 					</div>
 				</td>
-				<td style="vertical-align: top">
+				<td style="vertical-align: top" id="chat">
 					<div style="margin-bottom: 10px">
 						<label id="sessioncount">接続中...</label>
 					</div>
 					<div>
-						<label>ユーザー名</label>
-						<input id="username" type="text">
-						<br>
-						<label style="margin-right: 23.75px">テキスト</label>
-						<input id="chattext" type="text">
-						<input id="chatsend" type="button" value="送信">
+						<table id="chatTable">
+							<tr>
+								<td><label>ユーザー名</label></td>
+								<td><input id="username" type="text"></td>
+								<td rowspan="2"><input id="chatsend" type="button" value="送信"></td>
+							</tr>
+							<tr>
+								<td><label>テキスト</label></td>
+								<td><input id="chattext" type="text"></td>
+							<tr>
+						</table>
 						<div id="chatcontentlist">
 							<!-- Javascript
 							<article class="chatcontent">
@@ -50,12 +55,12 @@
 			<tr>
 				<td>
 					<div id="canvasmenu">
-						<div class="menuicon" id="clear">×</div>
-						<div class="menuicon" id="colorf5f5f5">消</div>
-						<div class="menuicon selectable" id="spoit">ス</div>
-						<div class="menuicon selectable" id="fill">塗</div>
-						<div class="menuicon selectable special" id="square">四角</div>
-						<div class="menuicon selectable special" id="circle">楕円</div>
+						<div class="menuicon" id="clear"><i class="fa fa-times"></i></div>
+						<div class="menuicon" id="colorf5f5f5"><i class="fa fa-eraser"></i></div>
+						<div class="menuicon selectable" id="spoit"><i class="fa fa-eyedropper"></i></div>
+						<div class="menuicon selectable" id="fill"><i class="fa fa-paint-brush"></i></div>
+						<div class="menuicon selectable special" id="square"><i class="fa fa-square"></i></div>
+						<div class="menuicon selectable special" id="circle"><i class="fa fa-circle"></i></div>
 						<input type="range" class="menuicon" id="size" value="20" min="20" max="100">
 						<input type="color" id="color" list="colors" value="#555555">
 						<input type="text" class="menuicon" id="alphavalue" value="10" readonly>
@@ -66,11 +71,20 @@
 					</div>
 				</td>
 				<td>
-					<a>Twitter: </a>
-					<a href="https://twitter.com/syu_chan_1005">@syu_chan_1005</a>
-					<br>
-					<a>Github: </a>
-					<a href="https://github.com/syuchan1005/OekakinoMorihiko">syuchan1005/OekakinoMorihiko</a>
+					<table><tr>
+						<td>
+							<p>
+								<a href="https://twitter.com/syu_chan_1005">@syu_chan_1005</a>
+							</p>
+						</td>
+						<td>
+							<p>
+								<a href="https://github.com/syuchan1005/OekakinoMorihiko">
+									<i class="fa fa-github"></i>
+								</a>
+							</p>
+						</td>
+					</tr></table>
 				</td>
 			</tr>
 		</table>

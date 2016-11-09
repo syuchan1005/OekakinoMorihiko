@@ -4,6 +4,24 @@ body {
     -webkit-user-select: none;
 }
 
+table {
+    margin: 0 auto;
+    border-collapse: collapse;
+    border-color: #ddd;
+}
+
+table#chatTable td {
+    padding: 0;
+}
+
+td {
+    padding: 0 15px;
+}
+
+td#chat {
+    padding: 10px 15px;
+}
+
 #canvases {
     position: relative;
     width: 1290px;
@@ -26,20 +44,18 @@ body {
 }
 
 .menuicon {
-    font-size: 12px;
-    width: 1.66em;
-    height: 1.66em;
-    background-color: #ddd;
+    font-size: 13px;
+    width: 1.7em;
+    height: 1.7em;
     float: right;
     text-align: center;
     line-height: 1.9;
     cursor: pointer;
-    border-radius: 0.83em;
     margin: 2px;
+    color: #272727;
 }
 
 .selectable {
-    border: 1px solid #dddddd;
 }
 
 #alphavalue {
@@ -73,7 +89,7 @@ body {
 #chatcontentlist {
     overflow-y: scroll;
     width: 305px;
-    height: 640px;
+    height: 620px;
 }
 
 #subChatContent {
@@ -85,6 +101,7 @@ body {
 #modeicon {
     float: left;
     background-color: #e74c3c;
+    border-radius: 0.83em;
 }
 
 input[type="color"] {
@@ -92,8 +109,29 @@ input[type="color"] {
     margin-right: 10px;
 }
 
+input[type="text"] {
+    -webkit-transition: all 0.1s;
+       -moz-transition: all 0.1s;
+        -ms-transition: all 0.1s;
+         -o-transition: all 0.1s;
+    max-width: 128px;
+    margin: 0 10px;
+    border: none;
+    border-bottom: 1px solid #ddd;
+}
+
+input[type="text"]:focus {
+    -webkit-transition: all 0.3s;
+       -moz-transition: all 0.3s;
+        -ms-transition: all 0.3s;
+         -o-transition: all 0.3s;
+    border-bottom-color: #39F;
+    outline: 0;
+}
+
 input[type="text"]#alphavalue {
     background-color: transparent;
+    border: none;
     border-radius: 0;
     margin-right: 10px;
 }
@@ -136,4 +174,40 @@ input[type="range"]::-webkit-slider-thumb:active {
 
 input[type="range"]#size::-webkit-slider-thumb:active {
     transform: scale(1);
+}
+
+input[type="button"] {
+    -webkit-transition: all 0.1s;
+       -moz-transition: all 0.1s;
+        -ms-transition: all 0.1s;
+         -o-transition: all 0.1s;
+    border: 1px solid #ddd;
+    background: transparent;
+    padding: 8px 15px;
+}
+
+input[type="button"]:hover {
+    -webkit-transition: all 0.3s;
+       -moz-transition: all 0.3s;
+        -ms-transition: all 0.3s;
+         -o-transition: all 0.3s;
+    cursor: pointer;
+    border-color: #39F;
+}
+
+a {
+    -webkit-transition: all 0.1s;
+       -moz-transition: all 0.1s;
+        -ms-transition: all 0.1s;
+         -o-transition: all 0.1s;
+    color: #272727;
+    text-decoration: none;
+}
+
+a:hover {
+    -webkit-transition: all 0.3s;
+       -moz-transition: all 0.3s;
+        -ms-transition: all 0.3s;
+         -o-transition: all 0.3s;
+    color: #39F;
 }

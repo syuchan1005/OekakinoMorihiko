@@ -1,7 +1,6 @@
 var menuIcon = document.getElementsByClassName("menuicon");
 
 for (var i = 0; i < menuIcon.length; i++) {
-    if (menuIcon[i].innerHTML.length != 0) menuIcon[i].style.width = 1.66 * menuIcon[i].innerHTML.length + "em";
     menuIcon[i].addEventListener("click", canvasMenu, false)
 }
 function canvasMenu() {
@@ -24,9 +23,9 @@ function canvasMenu() {
 function toggleSelectable(id) {
     var list = document.getElementsByClassName("selectable");
     for (var i = 0; i < list.length; i++) {
-        list[i].style.border = "1px solid #dddddd";
+        list[i].style.color = "#272727";
     }
-    if (id != undefined) document.getElementById(id).style.border = "1px solid #00BFFF";
+    if (id != undefined) document.getElementById(id).style.color = "#3399FF";
     selectId = id;
 }
 
