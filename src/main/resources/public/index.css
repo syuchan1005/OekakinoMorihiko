@@ -101,6 +101,7 @@ td#chat {
 #modeicon {
     float: left;
     background-color: #e74c3c;
+    border-radius: 0.83em;
 }
 
 input[type="color"] {
