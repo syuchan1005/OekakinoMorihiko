@@ -2,8 +2,8 @@
 
 ```js:connection.json
 {
-    "sessionCountLoad": "接続人数",
-    "selfSessionId": "接続Sessionの固有Id"
+    "sessionCountLoad": "$(接続人数)",
+    "selfSessionId": "$(接続Sessionの固有Id)"
 }
 ```
     
@@ -12,10 +12,10 @@
     
 ```js:connection_session.json
 {
-    "sessionCount": "接続人数",
+    "sessionCount": "$(接続人数)",
     "mode": "canvas",
     "option": "send",
-    "sendId": "接続Sessionの固有Id"
+    "sendId": "$(接続Sessionの固有Id)"
 }
 ```
     
@@ -25,8 +25,8 @@
 ```js:close.json
 {
     "mode": "close",
-    "sessionCountLoad": "接続人数",
-    "sessionId": "closeしたSessionの固有Id"
+    "sessionCountLoad": "$(接続人数)",
+    "sessionId": "$(closeしたSessionの固有Id)"
 }
 ```
     
@@ -42,8 +42,8 @@
 
 ```js:message.json
 {
-   "sessionCount": "接続人数",
-   "sessionId": "接続Sessionの固有Id"
+   "sessionCount": "$(接続人数)",
+   "sessionId": "$(接続Sessionの固有Id)"
 }
 ```
         
