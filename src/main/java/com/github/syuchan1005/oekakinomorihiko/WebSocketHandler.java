@@ -37,20 +37,20 @@ public class WebSocketHandler {
 		broadcastMessage(jsonObject.toString());
 		jsonObject.put("selfSessionId", id);
 		session.getRemote().sendStringByFuture(jsonObject.toString());
-		// sendOlderCanvas(session);
-		System.out.println("Connect:{ ID: " + id + " }");
+		sendOlderCanvas(session);
 		id += 1;
+		System.out.println("Connect:{ ID: " + id + " }");
 	}
 
 	@OnWebSocketClose
 	public void onClose(Session session, int statusCode, String reason) throws Exception {
-		System.out.println("Close:{ ID: " + sessions.get(session) + " }");
 		sessions.remove(session);
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("mode", "close");
 		jsonObject.put("sessionCountLoad", sessions.size());
 		jsonObject.put("sessionId", sessions.get(session));
 		broadcastMessage(jsonObject.toString());
+		System.out.println("Close:{ ID: " + sessions.get(session) + " }");
 	}
 
 	@OnWebSocketMessage
@@ -60,11 +60,10 @@ public class WebSocketHandler {
 			return;
 		}
 		JSONObject jsonObject = mapper.readValue(message, JSONObject.class);
-		try {
+		if (jsonObject.has("sendId")) {
 			Session session1 = getKey(jsonObject.getLong("sendId"));
-			System.out.println(message);
 			session1.getRemote().sendStringByFuture(message);
-		} catch (JSONException e) {
+		} else {
 			jsonObject.put("sessionCount", sessions.size());
 			jsonObject.put("sessionId", sessions.get(session));
 			broadcastMessage(jsonObject.toString());
@@ -82,10 +81,10 @@ public class WebSocketHandler {
 		Set<Map.Entry<Session, Long>> entries = sessions.entrySet();
 		if (!entries.isEmpty()) {
 			Optional<Map.Entry<Session, Long>> first = entries.stream()
+					.filter(o1 -> o1.getKey() != session)
 					.sorted((o1, o2) -> (int) (o1.getValue() - o2.getValue()))
 					.findFirst();
 			first.ifPresent(entry -> {
-				if (entry.getKey() == session) return;
 				JSONObject jsonObject = new JSONObject();
 				jsonObject.put("sessionCount", sessions.size());
 				jsonObject.put("mode", "canvas");

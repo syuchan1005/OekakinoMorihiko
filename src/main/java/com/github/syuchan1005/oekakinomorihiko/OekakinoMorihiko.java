@@ -7,6 +7,7 @@ import spark.Spark;
  */
 public class OekakinoMorihiko {
 	public static void main(String[] args) {
+		System.out.println("Run!!!!!!!");
 		Spark.port(4567);
 		Spark.staticFileLocation("/public");
 		Spark.webSocket("/web", WebSocketHandler.class);

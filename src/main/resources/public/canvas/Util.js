@@ -12,14 +12,6 @@ function openCanvasPng() {
     window.open(window.URL.createObjectURL(new Blob([toPNGBinary(canvas).buffer], {type: 'image/png'})));
 }
 
-function drawImage(data) {
-    var img = new Image();
-    img.onload = function () {
-        ctx.drawImage(img, 0, 0);
-    };
-    img.src = data;
-}
-
 function fillCanvas(context2D, width, height, color, alpha) {
     context2D.beginPath();
     context2D.fillStyle = color;

@@ -4,6 +4,7 @@
 var keepAlive;
 var mySessionId;
 var webSocket = new WebSocket((("https:" == document.location.protocol) ? "wss://" : "ws://") + location.hostname + ":" + location.port + "/web/");
+webSocket.binaryType = "arraybuffer";
 
 var modeIcon = document.getElementById("modeicon");
 var modeText = document.getElementById("modetext");
@@ -31,6 +32,7 @@ webSocket.onmessage = function (event) {
 };
 
 var count = document.getElementById("sessioncount");
+var loadCache = "";
 
 function onMessageProcess(json) {
     if (json.selfSessionId != undefined) {
@@ -81,12 +83,26 @@ function onMessageProcess(json) {
             case "canvas":
                 switch (json.option) {
                     case "load":
-                        drawImage(json.text);
+                        loadCache += json.text;
+                        console.log("load: " + json.index + ":" + json.text);
+                        if (json.index == 3) {
+                            var img = new Image();
+                            img.onload = function () {
+                                ctx.drawImage(img, 0, 0);
+                            };
+                            img.src = loadCache;
+                            loadCache = "";
+                        }
                         break;
                     case "send":
                         json.option = "load";
-                        json.text = canvas.toDataURL();
-                        send(json);
+                        var text = canvas.toDataURL();
+                        var len = Math.ceil(text.length / 4);
+                        for (var i = 0; i < 4; i++) {
+                            json.text = text.substring(i * len, (i + 1) * len);
+                            json.index = i;
+                            send(json);
+                        }
                         break;
                 }
                 break;
@@ -139,4 +155,3 @@ function send(object) {
         onMessageProcess(object);
     }
 }
-
