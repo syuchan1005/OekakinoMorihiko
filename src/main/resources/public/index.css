@@ -112,7 +112,6 @@ input[type="color"] {
 input[type="text"] {
     -webkit-transition: all 0.1s;
        -moz-transition: all 0.1s;
-        -ms-transition: all 0.1s;
          -o-transition: all 0.1s;
     max-width: 128px;
     margin: 0 10px;
@@ -123,7 +122,6 @@ input[type="text"] {
 input[type="text"]:focus {
     -webkit-transition: all 0.3s;
        -moz-transition: all 0.3s;
-        -ms-transition: all 0.3s;
          -o-transition: all 0.3s;
     border-bottom-color: #39F;
     outline: 0;
@@ -179,7 +177,6 @@ input[type="range"]#size::-webkit-slider-thumb:active {
 input[type="button"] {
     -webkit-transition: all 0.1s;
        -moz-transition: all 0.1s;
-        -ms-transition: all 0.1s;
          -o-transition: all 0.1s;
     border: 1px solid #ddd;
     background: transparent;
@@ -189,7 +186,6 @@ input[type="button"] {
 input[type="button"]:hover {
     -webkit-transition: all 0.3s;
        -moz-transition: all 0.3s;
-        -ms-transition: all 0.3s;
          -o-transition: all 0.3s;
     cursor: pointer;
     border-color: #39F;
@@ -198,7 +194,6 @@ input[type="button"]:hover {
 a {
     -webkit-transition: all 0.1s;
        -moz-transition: all 0.1s;
-        -ms-transition: all 0.1s;
          -o-transition: all 0.1s;
     color: #272727;
     text-decoration: none;
@@ -207,7 +202,6 @@ a {
 a:hover {
     -webkit-transition: all 0.3s;
        -moz-transition: all 0.3s;
-        -ms-transition: all 0.3s;
          -o-transition: all 0.3s;
     color: #39F;
 }

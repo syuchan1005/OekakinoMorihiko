@@ -9,7 +9,7 @@ webSocket.binaryType = "arraybuffer";
 var modeIcon = document.getElementById("modeicon");
 var modeText = document.getElementById("modetext");
 
-webSocket.onopen = function (event) {
+webSocket.onopen = function () {
     keepAlive = setInterval(function () {
         console.log("keepAlive");
         webSocket.send("KeepAlive");
@@ -18,7 +18,7 @@ webSocket.onopen = function (event) {
     modeText.innerHTML = "Server online";
 };
 
-webSocket.onclose = function (event) {
+webSocket.onclose = function () {
     clearInterval(keepAlive);
     appendChat("Application<br>WebSocket connection closed.", "application", true);
     count.innerHTML = "サーバーに接続できません";
@@ -136,7 +136,7 @@ function sendSpecialDraw(Mode, Size, Color, Alpha, X1, Y1, X2, Y2) {
 }
 
 function sendChat() {
-    var json = new Object();
+    var json = {};
     json.mode = "chat";
     var user = chatUserText.value;
     var text = chatText.value;

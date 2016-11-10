@@ -6,7 +6,7 @@
 		<meta name="description" content="自由にお絵かきが出来る！">
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-		
+
 		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
 			  integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
@@ -20,7 +20,7 @@
 		<table border="double">
 			<tr>
 				<td>
-					<div id="canvases" width="1280" height="720">
+					<div id="canvases">
 						<canvas width="1280" height="720" class="canvas" id="mainCanvas"></canvas>
 						<canvas width="1280" height="720" class="canvas" id="coverCanvas"></canvas>
 					</div>
@@ -110,7 +110,7 @@
 		<script src="canvas/MainCanvas.js"></script>
 		<script>
 			document.onkeydown = function (e) {
-				if (typeof e.modifiers == 'undefined' ? e.ctrlKey : e.modifiers & Event.CONTROL_MASK) {
+				if (e.ctrlKey) {
 					if (e.which == 13) { //enter
 						sendChat();
 					}

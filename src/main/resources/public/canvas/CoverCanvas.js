@@ -50,8 +50,6 @@ if (window.TouchEvent) {
     }, false);
 
     cCanvas.addEventListener("touchend", function (e) {
-        var touches = e.touches.item(0);
-        var rect = e.target.getBoundingClientRect();
         sendSpecialDraw(selectId,
             size, color, alpha,
             fLoc.X, fLoc.Y,
@@ -62,7 +60,7 @@ if (window.TouchEvent) {
 }
 
 function move(X, Y) {
-    claerCoverCanvas();
+    clearCoverCanvas();
     cCtx.beginPath();
     cCtx.globalAlpha = alpha;
     cCtx.strokeStyle = color;
@@ -80,13 +78,13 @@ function move(X, Y) {
     cCtx.stroke();
 }
 
-function claerCoverCanvas() {
+function clearCoverCanvas() {
     cCtx.clearRect(0, 0, 1280, 720);
     fillCanvas(cCtx, 1280, 720, "#555555", 0.5);
 }
 
 function showCoverCanvas() {
-    claerCoverCanvas();
+    clearCoverCanvas();
     cCanvas.style.display = "block";
     cCanvas.style.pointerEvents = "auto";
 }
