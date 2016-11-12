@@ -10,7 +10,7 @@ var server = http.createServer(function (request, response) {
     response.end();
 }).listen(4567);
 
-var wsServer = new ws({server:server});
+var wsServer = new ws({server: server});
 
 var id = 1;
 var connections = new Map();
@@ -24,6 +24,7 @@ wsServer.on('connection', function (client) {
     broadcastMessage(JSON.stringify(json));
     json.selfSessionId = id;
     client.send(JSON.stringify(json));
+    sendOlderCanvas(client);
     console.info("Connect: ID: " + id);
     id++;
 
@@ -52,15 +53,31 @@ wsServer.on('connection', function (client) {
     });
 });
 
+function sendOlderCanvas(client) {
+    var older = ["Test", Number.MAX_VALUE];
+    for (var e of connections.entries()) {
+        if (e[0] == client) continue;
+        if (older[1] > e[1]) older = e;
+    }
+    var json = {};
+    json.sessionCount = connections.size;
+    json.mode = "canvas";
+    json.option = "send";
+    json.sendId = connections.get(client);
+    if (older[1] != Number.MAX_VALUE) older[0].send(JSON.stringify(json));
+}
+
 function broadcastMessage(msg) {
     for (var key of connections.keys()) {
-        key.send(msg);
+        if (key.readyState == 1) key.send(msg);
     }
 }
 
 function getKey(id) {
-    for (let entry of connections.entries()) {
+    for (var entry of connections.entries()) {
+        if (entry[0].readyState != 1) continue;
         if (entry[1] == id) return entry[0];
     }
     return undefined;
 }
+

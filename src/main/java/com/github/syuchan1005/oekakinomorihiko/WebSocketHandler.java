@@ -38,8 +38,8 @@ public class WebSocketHandler {
 		jsonObject.put("selfSessionId", id);
 		session.getRemote().sendStringByFuture(jsonObject.toString());
 		sendOlderCanvas(session);
-		id += 1;
 		System.out.println("Connect:{ ID: " + id + " }");
+		id++;
 	}
 
 	@OnWebSocketClose
