@@ -17,6 +17,8 @@ var connections = new Map();
 
 console.log("Server Running at 4567!");
 
+let c;
+
 wsServer.on('connection', function (client) {
     connections.set(client, id);
     var json = {};
@@ -28,7 +30,7 @@ wsServer.on('connection', function (client) {
     console.info("Connect: ID: " + id);
     id++;
 
-    client.on('close', function (client) {
+    client.on('close', function () {
         connections.delete(client);
         var json = {};
         json.mode = "close";
@@ -56,6 +58,7 @@ wsServer.on('connection', function (client) {
 function sendOlderCanvas(client) {
     var older = ["Test", Number.MAX_VALUE];
     for (var e of connections.entries()) {
+        if (e[0].readyState != 1) continue;
         if (e[0] == client) continue;
         if (older[1] > e[1]) older = e;
     }
