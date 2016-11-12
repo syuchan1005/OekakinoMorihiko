@@ -48,7 +48,6 @@ public class WebSocketHandler {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("mode", "close");
 		jsonObject.put("sessionCountLoad", sessions.size());
-		jsonObject.put("sessionId", sessions.get(session));
 		broadcastMessage(jsonObject.toString());
 		System.out.println("Close:{ ID: " + sessions.get(session) + " }");
 	}

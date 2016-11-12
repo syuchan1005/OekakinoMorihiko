@@ -1,0 +1,11 @@
+{
+  "name": "oekakinomorihiko",
+  "version": "0.0.1",
+  "main": "NodeServer.js",
+  "description": "Oekaki is fun!",
+  "author": "syu_chan_1005",
+  "license": "MIT",
+  "dependencies": {
+    "ws": "^1.1.1"
+  }
+}

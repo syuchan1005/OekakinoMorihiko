@@ -2,3 +2,5 @@
 src/test
 target
 *.iml
+node/node_modules/
+node/npm-debug.log
