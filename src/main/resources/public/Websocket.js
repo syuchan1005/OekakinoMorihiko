@@ -41,7 +41,7 @@ function onMessageProcess(json) {
     if (json.sessionCount == undefined) {
         count.innerHTML = "接続人数: " + json.sessionCountLoad + "人";
     } else {
-        count.innerHTML = "接続人数: " + json.sessionCount + "人";
+        count.innerHTML = (json.sessionCount == -1) ? "接続できていません" :"接続人数: " + json.sessionCount + "人";
         switch (json.mode) {
             case "paint":
                 if (json.size == "AllClear") {
@@ -147,11 +147,11 @@ function sendChat() {
 }
 
 function send(object) {
-    if (webSocket != undefined && webSocket.readyState != 3) {
+    if (webSocket != undefined && webSocket.readyState == WebSocket.OPEN) {
         webSocket.send(JSON.stringify(object));
     } else {
-        object.sessionCount = 1;
-        object.sessionId = 1;
+        object.sessionCount = -1;
+        object.sessionId = -1;
         onMessageProcess(object);
     }
 }

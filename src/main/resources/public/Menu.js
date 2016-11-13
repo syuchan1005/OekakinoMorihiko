@@ -29,31 +29,11 @@ function toggleSelectable(id) {
     selectId = id;
 }
 
-var mainStyle = document.styleSheets[0];
-
-var addCSS;
-
-if (mainStyle.insertRule) {
-    addCSS = function(selector, property, value) {
-        mainStyle.insertRule(selector.replace(/:/g, "\\:") + ' {' + property + ':' + value + ';}', mainStyle.cssRules.length);
-    };
-} else {
-    addCSS = function(selector, property, value) {
-        mainStyle.addRule(selector, property + ':' + value);
-    };
-}
-
 // size処理
 var sizeInput = document.getElementById("size");
 sizeInput.addEventListener("input", onInputSize, false);
 function onInputSize() {
     size = sizeInput.value / 2.0;
-    addCSS('input[type="range"]#size::-webkit-slider-thumb:hover', "width", size + "px");
-    addCSS('input[type="range"]#size::-webkit-slider-thumb:hover', "height", size + "px");
-    addCSS('input[type="range"]#size::-webkit-slider-thumb:hover', "border-radius", size / 2.0 + "px");
-    addCSS('input[type="range"]#size::-webkit-slider-thumb:active', "width", size + "px");
-    addCSS('input[type="range"]#size::-webkit-slider-thumb:active', "height", size + "px");
-    addCSS('input[type="range"]#size::-webkit-slider-thumb:active', "border-radius", size / 2.0 + "px");
 }
 onInputSize();
 
@@ -62,7 +42,6 @@ var colorInput = document.getElementById("color");
 colorInput.addEventListener("input", onInputColor, false);
 function onInputColor() {
     color = colorInput.value;
-    addCSS('input[type="range"]#size::-webkit-slider-thumb', "background-color", color + "");
 }
 onInputColor();
 

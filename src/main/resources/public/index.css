@@ -67,10 +67,10 @@ td#chat {
 }
 
 #canvasmenu::after {
-    clear: both;
-    content: "";
-    display: block;
-}
+     clear: both;
+     content: "";
+     display: block;
+ }
 
 #chatcontent {
     background-color: #dddddd;
@@ -102,6 +102,10 @@ td#chat {
     float: left;
     background-color: #e74c3c;
     border-radius: 0.83em;
+}
+
+#modetext {
+    float: left;
 }
 
 input[type="color"] {
@@ -166,13 +170,10 @@ input[type="range"]#size::-webkit-slider-thumb:hover {
     border: none;
 }
 
-input[type="range"]::-webkit-slider-thumb:active {
+input[type="range"]#alpha::-webkit-slider-thumb:active {
     transform: scale(1.4);
 }
 
-input[type="range"]#size::-webkit-slider-thumb:active {
-    transform: scale(1);
-}
 
 input[type="button"] {
     -webkit-transition: all 0.1s;

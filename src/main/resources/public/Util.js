@@ -33,3 +33,9 @@ function ellipse(context2D, cx, cy, w, h) {
     context2D.bezierCurveTo(cx - xmagic, by, lx, cy + ymagic, lx, cy);
     context2D.bezierCurveTo(lx, cy - ymagic, cx - xmagic, ty, cx, ty);
 }
+
+function triggerEvent(element, event) {
+    var evt = document.createEvent("HTMLEvents");
+    evt.initEvent(event, true, true ); // event type, bubbling, cancelable
+    return element.dispatchEvent(evt);
+}
