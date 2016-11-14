@@ -68,7 +68,7 @@
 						<input type="text" class="menuicon" id="alphavalue" value="10" readonly>
 						<input type="range" class="menuicon" id="alpha" value="100">
 
-						<div class="menuicon" id="modeicon"></div>
+						<div class="menuicon" id="modeicon" onclick="webSocketReload()"></div>
 						<div id="modetext"></div>
 					</div>
 				</td>
@@ -123,7 +123,6 @@
 						sendChat();
 					}
 				} else if (e.keyCode == 27) {
-					console.info(ctx.getImageData(0, 0, canvas.width, canvas.height));
 					noneCoverCanvas();
 					toggleSelectable(undefined);
 				}

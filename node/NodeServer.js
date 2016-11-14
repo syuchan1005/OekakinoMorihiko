@@ -18,7 +18,7 @@ var connections = new Map();
 console.log("Server Running at 4567!");
 
 wsServer.on('connection', function (client) {
-    client.setTimeout(300000);
+    client.closeTimeout = 300000;
     connections.set(client, id);
     var json = {};
     json.sessionCountLoad = connections.size;

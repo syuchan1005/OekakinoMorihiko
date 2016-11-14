@@ -3,33 +3,46 @@
  */
 var keepAlive;
 var mySessionId;
-var webSocket = new WebSocket((("https:" == document.location.protocol) ? "wss://" : "ws://") + location.hostname + ":" + location.port + "/web/");
-webSocket.binaryType = "arraybuffer";
+var webSocket;
 
 var modeIcon = document.getElementById("modeicon");
 var modeText = document.getElementById("modetext");
 
-webSocket.onopen = function () {
-    keepAlive = setInterval(function () {
-        console.log("keepAlive");
-        webSocket.send("KeepAlive");
-    }, 150000);
-    modeIcon.style.backgroundColor = "#00e676";
-    modeText.innerHTML = "Server online";
-};
+function webSocketInit() {
+    webSocket = new WebSocket((("https:" == document.location.protocol) ? "wss://" : "ws://") + location.hostname + ":" + location.port + "/web/");
+    webSocket.binaryType = "arraybuffer";
 
-webSocket.onclose = function () {
-    clearInterval(keepAlive);
-    appendChat("Application<br>WebSocket connection closed.", "application", true);
-    count.innerHTML = "サーバーに接続できません";
-    modeIcon.style.backgroundColor = "#e74c3c";
-    modeText.innerHTML = "Server offline";
-};
+    webSocket.onopen = function () {
+        keepAlive = setInterval(function () {
+            console.log("keepAlive");
+            webSocket.send("KeepAlive");
+        }, 150000);
+        modeIcon.style.backgroundColor = "#00e676";
+        modeText.innerHTML = "Server online";
+    };
 
-webSocket.onmessage = function (event) {
-    if (event.data == "keepAlive") return;
-    onMessageProcess(JSON.parse(event.data));
-};
+    webSocket.onclose = function () {
+        clearInterval(keepAlive);
+        appendChat("Application<br>WebSocket connection closed.", "application", true);
+        count.innerHTML = "サーバーに接続できません";
+        modeIcon.style.backgroundColor = "#e74c3c";
+        modeText.innerHTML = "Server offline";
+    };
+
+    webSocket.onmessage = function (event) {
+        if (event.data == "keepAlive") return;
+        onMessageProcess(JSON.parse(event.data));
+    };
+}
+webSocketInit();
+
+function webSocketReload() {
+    if (webSocket.readyState == WebSocket.OPEN) {
+        appendChat("Application<br>WebSocket already opened!", "application", true)
+    } else {
+        webSocketInit();
+    }
+}
 
 var count = document.getElementById("sessioncount");
 var loadCache = "";
