@@ -55,7 +55,14 @@ td#chat {
     color: #272727;
 }
 
-.selectable {
+.tweet-btn {
+    background-color: #1b95e0;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: #fff;
+    display: block;
+    padding: 4px 8px 4px 8px;
+    text-align: center;
 }
 
 #alphavalue {
