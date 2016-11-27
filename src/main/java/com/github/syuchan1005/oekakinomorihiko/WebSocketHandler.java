@@ -10,8 +10,10 @@ import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -24,6 +26,7 @@ public class WebSocketHandler {
 	private static long id = 1;
 	private static Map<Session, Long> sessions = Collections.synchronizedMap(new HashMap<>());
 	private static ObjectMapper mapper = new ObjectMapper();
+	private static List<String> chat = new ArrayList<>();
 
 	static {
 		mapper.registerModule(new JsonOrgModule());
@@ -38,6 +41,7 @@ public class WebSocketHandler {
 		jsonObject.put("selfSessionId", id);
 		session.getRemote().sendStringByFuture(jsonObject.toString());
 		sendOlderCanvas(session);
+		sendLatestChat(session);
 		System.out.println("Connect:{ ID: " + id + " }");
 		id++;
 	}
@@ -65,7 +69,16 @@ public class WebSocketHandler {
 		} else {
 			jsonObject.put("sessionCount", sessions.size());
 			jsonObject.put("sessionId", sessions.get(session));
+			if (jsonObject.getString("mode").equalsIgnoreCase("chat")) {
+				chat.add(jsonObject.toString());
+			}
 			broadcastMessage(jsonObject.toString());
+		}
+	}
+
+	protected void sendLatestChat(Session session) {
+		for (String s : chat) {
+			session.getRemote().sendStringByFuture(s);
 		}
 	}
 

@@ -14,6 +14,7 @@ var wsServer = new ws({server: server});
 
 var id = 1;
 var connections = new Map();
+var chat = [];
 
 console.log("Server Running at 4567!");
 
@@ -26,6 +27,7 @@ wsServer.on('connection', function (client) {
     json.selfSessionId = id;
     client.send(JSON.stringify(json));
     sendOlderCanvas(client);
+    sendLatestChat(client);
     console.info("Connect: ID: " + id);
     id++;
 
@@ -49,10 +51,19 @@ wsServer.on('connection', function (client) {
         } else {
             json.sessionCount = connections.size;
             json.sessionId = connections.get(client);
+            if (json.mode == "chat") {
+                chat.push(JSON.stringify(json));
+            }
             broadcastMessage(JSON.stringify(json));
         }
     });
 });
+
+function sendLatestChat(client) {
+    for (var s of chat) {
+        client.send(s);
+    }
+}
 
 function sendOlderCanvas(client) {
     var older = ["Test", Number.MAX_VALUE];
