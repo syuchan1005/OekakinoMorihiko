@@ -11,8 +11,7 @@ function canvasMenu() {
             showCoverCanvas();
         }
     } else if (this.id.indexOf("color") + 1) {
-        colorInput.value = "#" + this.id.slice(5, this.id.length);
-        onInputColor();
+        colorPicker.setHex("#" + this.id.slice(5, this.id.length));
     } else if (this.id.indexOf("clear") + 1) {
         if (confirm("すべて消去しますか？")) {
             sendDraw("paint", "AllClear");
@@ -35,11 +34,12 @@ function onInputSize() {
     size = sizeInput.value / 2.0;
 }
 
-var colorInput = document.getElementById("color");
-colorInput.addEventListener("input", onInputColor, false);
-function onInputColor() {
-    color = colorInput.value;
-}
+var colorPicker = ColorPicker(
+    document.getElementById('color-picker'),
+    function (hex, hsv, rgb) {
+        color = hex;
+    }
+);
 
 var range = document.getElementById("alpha");
 var rangeValue = document.getElementById("alphavalue");
@@ -64,7 +64,7 @@ for (var i = 0; i < menuIcon.length; i++) {
 }
 
 onInputSize();
-onInputColor();
+colorPicker.setHex("#555555");
 onInputRange();
 
 document.getElementById("chatsend").addEventListener("click", sendChat, false);

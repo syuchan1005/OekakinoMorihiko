@@ -54,7 +54,7 @@ selfCanvas.addEventListener('mouseup', sendDrawEnd, false);
 selfCanvas.addEventListener('mouseout', sendDrawEnd, false);
 
 if (window.TouchEvent) {
-    TouchEvent(selfCanvas, clickProcess, function () {
+    TouchEvent(selfCanvas, clickProcess, function (X, Y) {
         sendDraw("paint", size, color, alpha, X, Y);
     });
     selfCanvas.addEventListener('touchend', sendDrawEnd, false);
@@ -69,9 +69,10 @@ function clickProcess(X, Y) {
     if (selectId != undefined) {
         switch (selectId) {
             case "spoit":
-                var spoitImage = selfContext.getImageData(X, Y, 1, 1);
-                colorInput.value = '#' + (((256 + spoitImage.data[0] << 8) + spoitImage.data[1] << 8) + spoitImage.data[2]).toString(16).slice(1);
-                onInputColor();
+                console.log(X, Y);
+                var spoit = mainContext.getImageData(X, Y, 1, 1).data;
+                var hex = '#' + (((256 + spoit[0] << 8) + spoit[1] << 8) + spoit[2]).toString(16).slice(1);
+                colorPicker.setHex(hex);
                 break;
             case "fill":
                 sendDraw("fill", 0, color, alpha, X, Y);

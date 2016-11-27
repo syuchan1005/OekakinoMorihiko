@@ -51,7 +51,6 @@ function onInputColor(rgb) {
 
 // alpha処理
 var range = $("#alpha");
-
 range.on('input change', function () {
     alpha = range.val() / 100.0;
     $("#alphavalue").val(range.val() / 10.0);
