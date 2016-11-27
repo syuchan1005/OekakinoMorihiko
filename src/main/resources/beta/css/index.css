@@ -36,7 +36,6 @@ body {
     font-size: 13px;
     width: 1.7em;
     height: 1.7em;
-    float: right;
     text-align: center;
     line-height: 1.9;
     cursor: pointer;
@@ -90,20 +89,39 @@ body {
 
 #canvasmenu {
     width: 1290px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#mode {
+    flex-direction: row;
+}
+
+#items {
+    display: flex;
+    flex-direction: column;
+}
+
+#icons {
+    display: flex;
+    flex-direction: row;
+}
+
+#inputs {
+    display: flex;
+    flex-direction: column;
+}
+
+.inputs-label {
+    display:block;
 }
 
 #modeicon {
-    float: left;
     background-color: #e74c3c;
     border-radius: 0.83em;
 }
 
-#modetext {
-    float: left;
-}
-
 input[type="color"] {
-    float: right;
     margin-right: 10px;
 }
 
@@ -133,7 +151,6 @@ input[type="text"]#alphavalue {
 }
 
 input[type="range"] {
-    float: right;
     -webkit-appearance: none;
     background-color: #bdc3c7;
     width: 300px;

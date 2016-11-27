@@ -25,20 +25,34 @@
 				<canvas width="1280" height="720" class="canvas" id="coverCanvas"></canvas>
 			</div>
 			<div id="canvasmenu">
-				<div class="menuicon" id="clear"><i class="fa fa-times"></i></div>
-				<div class="menuicon" id="colorf5f5f5"><i class="fa fa-eraser"></i></div>
-				<div class="menuicon selectable" id="spoit"><i class="fa fa-eyedropper"></i></div>
-				<div class="menuicon selectable" id="fill"><i class="fa fa-paint-brush"></i></div>
-				<div class="menuicon selectable special" id="square"><i class="fa fa-square"></i></div>
-				<div class="menuicon selectable special" id="circle"><i class="fa fa-circle"></i></div>
-				<div class="menuicon selectable special" id="line"><b><i>/</i></b></div>
-				<input type="range" class="menuicon" id="size" value="1" min="1" max="100">
-				<input type="text" class="menuicon" id="alphavalue" value="10" readonly>
-				<input type="range" class="menuicon" id="alpha" value="100" min="1">
+				<div id="mode">
+					<div class="menuicon" id="modeicon" onclick="webSocketReload()"></div>
+					<div id="modetext"></div>
+				</div>
 
+				<div id="items">
+					<div id="icons">
+						<div class="menuicon" id="clear"><i class="fa fa-times"></i></div>
+						<div class="menuicon" id="colorf5f5f5"><i class="fa fa-eraser"></i></div>
+						<div class="menuicon selectable" id="spoit"><i class="fa fa-eyedropper"></i></div>
+						<div class="menuicon selectable" id="fill"><i class="fa fa-paint-brush"></i></div>
+						<div class="menuicon selectable special" id="square"><i class="fa fa-square"></i></div>
+						<div class="menuicon selectable special" id="circle"><i class="fa fa-circle"></i></div>
+						<div class="menuicon selectable special" id="line"><b><i>/</i></b></div>
+					</div>
 
-				<div class="menuicon" id="modeicon" onclick="webSocketReload()"></div>
-				<div id="modetext"></div>
+					<div id="inputs">
+						<div>
+							<label class="inputs-label">透明度</label>
+							<input type="range" id="alpha" value="100" min="1">
+							<input type="text" id="alphavalue" value="10" readonly>
+						</div>
+						<div>
+							<label class="inputs-label">ペンの太さ</label>
+							<input type="range" id="size" value="1" min="1" max="100">
+						</div>
+					</div>
+				</div>
 
 				<div id="color-picker" class="cp-default"></div>
 			</div>
