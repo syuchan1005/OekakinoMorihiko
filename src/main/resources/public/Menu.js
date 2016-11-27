@@ -12,8 +12,7 @@ function canvasMenu() {
             showCoverCanvas();
         }
     } else if (this.id.indexOf("color") + 1) {
-        colorInput.value = "#" + this.id.slice(5, this.id.length);
-        onInputColor();
+        onInputColor("#" + this.id.slice(5, this.id.length));
     } else if (this.id.indexOf("clear") + 1) {
         if (confirm("すべて消去しますか？")) {
             sendDraw("paint", "AllClear");
@@ -36,13 +35,19 @@ $('#size').on('input change', function () {
 });
 
 //color処理
-$('#colorpickerHolder').ColorPicker({
+var colorpickerHolder = $('#colorpickerHolder');
+colorpickerHolder.ColorPicker({
     flat: true,
     color: color,
     onChange: function (hsb, hex, rgb) {
         color = '#' + hex;
     }
 });
+
+function onInputColor(rgb) {
+    colorpickerHolder.ColorPickerSetColor(rgb);
+    color = rgb;
+}
 
 // alpha処理
 var range = $("#alpha");

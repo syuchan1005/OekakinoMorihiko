@@ -62,8 +62,7 @@ function clickProcess(X, Y) {
         switch (selectId) {
             case "spoit":
                 var spoitImage = ctx.getImageData(X, Y, 1, 1);
-                colorInput.value = '#' + (((256 + spoitImage.data[0] << 8) + spoitImage.data[1] << 8) + spoitImage.data[2]).toString(16).slice(1);
-                onInputColor();
+                onInputColor('#' + (((256 + spoitImage.data[0] << 8) + spoitImage.data[1] << 8) + spoitImage.data[2]).toString(16).slice(1));
                 break;
             case "fill":
                 sendDraw("fill", 0, color, alpha, X, Y);
