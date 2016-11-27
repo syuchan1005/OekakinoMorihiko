@@ -13,8 +13,12 @@ function appendChat(text, sessionId, self) {
     var split = text.split("<br>");
     var ele = document.createElement("article");
     ele.id = self ? "mychatcontent" : "chatcontent";
-    ele.innerHTML = "<span>" + split[0] + "</span>" +
+    ele.innerHTML = "<span>" + chatEscape(split[0]) + "</span>" +
                       "<span id='subChatContent'>" + "id:" + sessionId + "</span>" +
-                      "<div>" + split[1] + "</div>";
+                      "<div>" + chatEscape(split[1]) + "</div>";
     chat_list.insertBefore(ele, chat_list.firstChild);
+}
+
+function chatEscape(str) {
+    return str.replace("<", "&lt;").replace(">", "&gt;");
 }
