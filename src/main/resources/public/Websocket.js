@@ -97,7 +97,6 @@ function onMessageProcess(json) {
                 switch (json.option) {
                     case "load":
                         loadCache += json.text;
-                        console.log("load: " + json.index + ":" + json.text);
                         if (json.index == 3) {
                             var img = new Image();
                             img.onload = function () {

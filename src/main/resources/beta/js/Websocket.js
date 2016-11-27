@@ -8,16 +8,18 @@ var webSocket;
 var modeIcon = document.getElementById("modeicon");
 var modeText = document.getElementById("modetext");
 
+var count = document.getElementById("sessioncount");
+var loadCache = "";
+
 function webSocketInit() {
     new Promise(function () {
         var url = (("https:" == document.location.protocol) ? "wss://" : "ws://") + location.hostname + ":" + (location.port || 80) + "/web/";
         webSocket = new WebSocket(url);
-        webSocket.binaryType = "arraybuffer";
 
         webSocket.onopen = function () {
             keepAlive = setInterval(function () {
                 webSocket.send("KeepAlive");
-            }, 150000);
+            }, 60000);
             modeIcon.style.backgroundColor = "#00e676";
             modeText.innerHTML = "Server online";
         };
@@ -44,9 +46,6 @@ function webSocketReload() {
         webSocketInit();
     }
 }
-
-var count = document.getElementById("sessioncount");
-var loadCache = "";
 
 function onMessageProcess(json) {
     if (json.selfSessionId != undefined) {
@@ -92,15 +91,15 @@ function onMessageProcess(json) {
                         if (json.index == 3) {
                             var img = new Image();
                             img.onload = function () {
-                                selfContext.drawImage(img, 0, 0);
+                                mainContext.drawImage(img, 0, 0);
                             };
                             img.src = loadCache;
-                            loadCache = undefined;
+                            loadCache = "";
                         }
                         break;
                     case "send":
                         json.option = "load";
-                        var text = selfCanvas.toDataURL();
+                        var text = mainCanvas.toDataURL();
                         var len = Math.ceil(text.length / 4);
                         for (var i = 0; i < 4; i++) {
                             json.text = text.substring(i * len, (i + 1) * len);
@@ -109,6 +108,7 @@ function onMessageProcess(json) {
                         }
                         break;
                 }
+                break;
                 break;
         }
     }
