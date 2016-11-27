@@ -109,18 +109,18 @@ function draw(sessionId, Size, Color, Alpha, X, Y) {
 }
 
 function drawEnd(sessionId) {
-    if (locations[sessionId] == undefined) {
-        locations[sessionId] = {};
-    }
-    var location = locations[sessionId];
-    location.X1 = "";
-    location.Y1 = "";
+    removeDraw(sessionId);
     margeMainCanvas(selfContext);
     selfContext.clearRect(0, 0, 1280, 720);
 }
 
 function removeDraw(sessionId) {
-    locations[sessionId] = undefined;
+    if (locations[sessionId] == undefined) {
+        locations[sessionId] = {};
+    }
+    var location = locations[sessionId];
+    location.X1 = undefined;
+    location.Y1 = undefined;
 }
 
 // CoverCanvas
@@ -132,7 +132,7 @@ MouseEvent(coverCanvas, function (X, Y) {
 coverCanvas.addEventListener('mouseup', function (e) {
     if (e.button === 0) {
         var rect = e.target.getBoundingClientRect();
-        sendSpecialDraw(selectId, size, color, alpha, fLoc.X, fLoc.Y,
+        sendDraw(selectId, size, color, alpha, fLoc.X, fLoc.Y,
             ~~(e.clientX - rect.left), ~~(e.clientY - rect.top));
         toggleSelectable(undefined);
         noneCoverCanvas();
@@ -149,7 +149,7 @@ if (window.TouchEvent) {
     });
 
     coverCanvas.addEventListener("touchend", function () {
-        sendSpecialDraw(selectId, size, color, alpha, fLoc.X, fLoc.Y, eLoc.X, eLoc.Y);
+        sendDraw(selectId, size, color, alpha, fLoc.X, fLoc.Y, eLoc.X, eLoc.Y);
         toggleSelectable(undefined);
         noneCoverCanvas();
     }, false);

@@ -26,6 +26,13 @@ body {
     pointer-events: none;
 }
 
+#previewCanvas {
+    display: block;
+    border: solid;
+    width: 100px;
+    height: 100px;
+}
+
 .canvas {
     border: 5px solid #e6e6e6;
     cursor: default;
@@ -104,7 +111,7 @@ body {
 
 #icons {
     display: flex;
-    flex-direction: row;
+    flex-direction: row-reverse;
 }
 
 #inputs {
@@ -113,7 +120,7 @@ body {
 }
 
 .inputs-label {
-    display:block;
+    display: block;
 }
 
 #modeicon {

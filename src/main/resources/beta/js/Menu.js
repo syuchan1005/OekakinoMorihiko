@@ -2,6 +2,8 @@ var menuIcon = document.getElementsByClassName("menuicon");
 var chatUserText = document.getElementById("username");
 var chatText = document.getElementById("chattext");
 var chat_list = document.getElementById("chatcontentlist");
+var previewCanvas = document.getElementById("previewCanvas");
+var previewContext = previewCanvas.getContext("2d");
 
 function canvasMenu() {
     noneCoverCanvas();
@@ -32,21 +34,36 @@ var sizeInput = document.getElementById("size");
 sizeInput.addEventListener("input", onInputSize, false);
 function onInputSize() {
     size = sizeInput.value / 2.0;
+    drawSampleCanvas();
 }
 
+var picker = document.getElementById('color-picker');
 var colorPicker = ColorPicker(
-    document.getElementById('color-picker'),
+    picker,
     function (hex, hsv, rgb) {
         color = hex;
+        picker.style.backgroundColor = hex;
+        drawSampleCanvas();
     }
 );
 
 var range = document.getElementById("alpha");
-var rangeValue = document.getElementById("alphavalue");
 range.addEventListener("input", onInputRange, false);
 function onInputRange() {
     alpha = range.value / 100.0;
-    rangeValue.value = range.value / 10.0;
+    drawSampleCanvas();
+}
+
+function drawSampleCanvas() {
+    previewContext.clearRect(0, 0, 150, 150);
+    previewContext.beginPath();
+    previewContext.globalAlpha = alpha;
+    previewContext.strokeStyle = color;
+    previewContext.lineWidth = size * 1.5;
+    previewContext.lineCap = 'round';
+    previewContext.moveTo(75, 75);
+    previewContext.lineTo(75, 75);
+    previewContext.stroke();
 }
 
 function appendChat(text, sessionId, self, time) {
