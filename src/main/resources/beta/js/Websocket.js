@@ -66,7 +66,7 @@ function onMessageProcess(json) {
                 }
                 break;
             case "chat":
-                appendChat(json.text, json.sessionId, (json.sessionId == mySessionId));
+                appendChat(json.text, json.sessionId, (json.sessionId == mySessionId), json.time);
                 break;
             case "fill":
                 selfContext.globalAlpha = json.alpha;
@@ -146,6 +146,7 @@ function sendChat() {
     var text = chatText.value;
     if (text == undefined || text == "") return;
     json.text = (user == undefined || user == "" ? "匿名" : user) + "<br>" + text;
+    json.time = getCurrentTime();
     send(json);
     chatText.value = "";
 }

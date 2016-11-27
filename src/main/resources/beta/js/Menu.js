@@ -49,12 +49,14 @@ function onInputRange() {
     rangeValue.value = range.value / 10.0;
 }
 
-function appendChat(text, sessionId, self) {
+function appendChat(text, sessionId, self, time) {
+    time = time || "";
     var split = text.split("<br>");
     var ele = document.createElement("article");
     ele.id = self ? "mychatcontent" : "chatcontent";
     ele.innerHTML = "<span>" + split[0].replace("<", "&lt;").replace(">", "&gt;") + "</span>" +
-        "<span id='subChatContent'>" + "id:" + sessionId + "</span>" +
+        "<span class='subChatContent'>" + "id:" + sessionId + "</span>" +
+        "<span class='subChatContent'>" + time + "</span>" +
         "<div>" + split[1].replace("<", "&lt;").replace(">", "&gt;") + "</div>";
     chat_list.insertBefore(ele, chat_list.firstChild);
 }

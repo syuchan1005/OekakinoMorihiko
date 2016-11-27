@@ -81,7 +81,7 @@ body {
     height: 660px;
 }
 
-#subChatContent {
+.subChatContent {
     font-size: 70%;
     color: #555555;
     margin-left: 5px;

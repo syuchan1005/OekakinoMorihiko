@@ -85,7 +85,7 @@ function clickProcess(X, Y) {
 }
 
 function clearCanvas() {
-    selfCanvas.clearRect(0, 0, 1280, 720);
+    fillCanvas(mainContext, mainCanvas.width, mainCanvas.height, "#f5f5f5", 1);
 }
 
 function draw(sessionId, Size, Color, Alpha, X, Y) {
