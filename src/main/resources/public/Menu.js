@@ -3,6 +3,7 @@ var menuIcon = document.getElementsByClassName("menuicon");
 for (var i = 0; i < menuIcon.length; i++) {
     menuIcon[i].addEventListener("click", canvasMenu, false)
 }
+
 function canvasMenu() {
     noneCoverCanvas();
     if (this.classList.contains("selectable")) {
@@ -30,27 +31,23 @@ function toggleSelectable(id) {
 }
 
 // size処理
-var sizeInput = document.getElementById("size");
-sizeInput.addEventListener("input", onInputSize, false);
-function onInputSize() {
-    size = sizeInput.value / 2.0;
-}
-onInputSize();
+$('#size').on('input change', function () {
+    size = $(this).val();
+});
 
 //color処理
-var colorInput = document.getElementById("color");
-colorInput.addEventListener("input", onInputColor, false);
-function onInputColor() {
-    color = colorInput.value;
-}
-onInputColor();
+$('#colorpickerHolder').ColorPicker({
+    flat: true,
+    color: color,
+    onChange: function (hsb, hex, rgb) {
+        color = '#' + hex;
+    }
+});
 
 // alpha処理
-var range = document.getElementById("alpha");
-var rangeValue = document.getElementById("alphavalue");
-range.addEventListener("input", onInputRange, false);
-function onInputRange() {
-    alpha = range.value / 100.0;
-    rangeValue.value = range.value / 10.0;
-}
-onInputRange();
+var range = $("#alpha");
+
+range.on('input change', function () {
+    alpha = range.val() / 100.0;
+    $("#alphavalue").val(range.val() / 10.0);
+});
