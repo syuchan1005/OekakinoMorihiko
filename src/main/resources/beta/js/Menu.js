@@ -13,7 +13,7 @@ function canvasMenu() {
             showCoverCanvas();
         }
     } else if (this.id.indexOf("color") + 1) {
-        colorPicker.setHex("#" + this.id.slice(5, this.id.length));
+        colorPicker.set("#" + this.id.slice(5, this.id.length));
     } else if (this.id.indexOf("clear") + 1) {
         if (confirm("すべて消去しますか？")) {
             sendDraw("paint", "AllClear");
