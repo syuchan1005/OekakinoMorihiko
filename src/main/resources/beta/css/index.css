@@ -128,6 +128,11 @@ body {
     border-radius: 0.83em;
 }
 
+#color-sample {
+    width: 455px;
+    border: double;
+}
+
 input[type="text"] {
     -webkit-transition: all 0.1s;
     -moz-transition: all 0.1s;

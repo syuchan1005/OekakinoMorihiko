@@ -66,7 +66,6 @@ function clickProcess(X, Y) {
     if (selectId != undefined) {
         switch (selectId) {
             case "spoit":
-                console.log(X, Y);
                 var spoit = mainContext.getImageData(X, Y, 1, 1).data;
                 setColor('#' + (((256 + spoit[0] << 8) + spoit[1] << 8) + spoit[2]).toString(16).slice(1));
                 break;

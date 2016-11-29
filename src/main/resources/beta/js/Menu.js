@@ -6,13 +6,14 @@ var previewCanvas = document.getElementById("previewCanvas");
 var previewContext = previewCanvas.getContext("2d");
 
 function canvasMenu() {
-    console.log("menu");
     noneCoverCanvas();
     if (this.classList.contains("selectable")) {
         toggleSelectable(this.id);
         if (this.classList.contains("special")) {
             showCoverCanvas();
         }
+    } else if (this.id == "color-save"){
+        addSample(getColor());
     } else if (this.id.indexOf("color") + 1) {
         setColor("#" + this.id.slice(5, this.id.length));
     } else if (this.id.indexOf("clear") + 1) {
@@ -38,7 +39,8 @@ colorPicker.picker.classList.add('static');
 colorPicker.set("#555555");
 colorPicker.enter(colorInput);
 colorPicker.on("change", function (color) {
-    picker.style.backgroundColor = "#" + color;
+    picker.color = "#" + color;
+    picker.style.backgroundColor = picker.color;
     drawPreviewCanvas();
 });
 
@@ -49,7 +51,7 @@ range.addEventListener("input", drawPreviewCanvas, false);
 sizeInput.addEventListener("input", drawPreviewCanvas, false);
 
 function getColor() {
-    return picker.style.backgroundColor;
+    return picker.color;
 }
 
 function setColor(hex) {
@@ -79,13 +81,21 @@ function drawPreviewCanvas() {
 
 var colorSample = document.getElementById("color-sample");
 function addSample(hex) {
-    hex = hex.replace("#", "");
     var colorButton = document.createElement("button");
     colorButton.innerHTML = hex;
-    colorButton.id = "color" + hex;
-    colorButton.onclick = canvasMenu;
+    colorButton.value = hex;
+    colorButton.style.backgroundColor = hex;
+    colorButton.onclick = function (e) {
+        setColor(this.innerHTML);
+    };
+    colorButton.oncontextmenu = function (e) {
+        e.preventDefault();
+        this.parentNode.removeChild(this);
+    };
     colorSample.appendChild(colorButton);
 }
+
+document.getElementById("color-save").addEventListener("click", canvasMenu, false);
 
 function appendChat(text, sessionId, self, time) {
     time = time || "";
