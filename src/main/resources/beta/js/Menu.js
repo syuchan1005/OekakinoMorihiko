@@ -6,6 +6,7 @@ var previewCanvas = document.getElementById("previewCanvas");
 var previewContext = previewCanvas.getContext("2d");
 
 function canvasMenu() {
+    console.log("menu");
     noneCoverCanvas();
     if (this.classList.contains("selectable")) {
         toggleSelectable(this.id);
@@ -13,7 +14,7 @@ function canvasMenu() {
             showCoverCanvas();
         }
     } else if (this.id.indexOf("color") + 1) {
-        colorPicker.set("#" + this.id.slice(5, this.id.length));
+        setColor("#" + this.id.slice(5, this.id.length));
     } else if (this.id.indexOf("clear") + 1) {
         if (confirm("すべて消去しますか？")) {
             sendDraw("paint", "AllClear");
@@ -51,6 +52,11 @@ function getColor() {
     return picker.style.backgroundColor;
 }
 
+function setColor(hex) {
+    colorPicker.set(hex);
+    colorPicker.trigger("change", [hex.replace("#", "")]);
+}
+
 function getAlpha() {
     return range.value / 100.0;
 }
@@ -71,6 +77,16 @@ function drawPreviewCanvas() {
     previewContext.stroke();
 }
 
+var colorSample = document.getElementById("color-sample");
+function addSample(hex) {
+    hex = hex.replace("#", "");
+    var colorButton = document.createElement("button");
+    colorButton.innerHTML = hex;
+    colorButton.id = "color" + hex;
+    colorButton.onclick = canvasMenu;
+    colorSample.appendChild(colorButton);
+}
+
 function appendChat(text, sessionId, self, time) {
     time = time || "";
     var split = text.split("<br>");
@@ -84,7 +100,7 @@ function appendChat(text, sessionId, self, time) {
 }
 
 for (var i = 0; i < menuIcon.length; i++) {
-    menuIcon[i].addEventListener("click", canvasMenu, false)
+    menuIcon[i].addEventListener("click", canvasMenu, false);
 }
 document.getElementById("chatsend").addEventListener("click", sendChat, false);
 document.getElementById("downloadPng").addEventListener("click", openCanvasPng, false);
