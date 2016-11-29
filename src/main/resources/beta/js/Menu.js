@@ -30,36 +30,41 @@ function toggleSelectable(id) {
     selectId = id;
 }
 
-var sizeInput = document.getElementById("size");
-sizeInput.addEventListener("input", onInputSize, false);
-function onInputSize() {
-    size = sizeInput.value / 2.0;
-    drawSampleCanvas();
-}
-
+var colorInput = document.getElementById("color-input");
 var picker = document.getElementById('color-picker');
-var colorPicker = ColorPicker(
-    picker,
-    function (hex, hsv, rgb) {
-        color = hex;
-        picker.style.backgroundColor = hex;
-        drawSampleCanvas();
-    }
-);
+var colorPicker = new CP(picker, false);
+colorPicker.picker.classList.add('static');
+colorPicker.set("#555555");
+colorPicker.enter(colorInput);
+colorPicker.on("change", function (color) {
+    picker.style.backgroundColor = "#" + color;
+    drawPreviewCanvas();
+});
 
 var range = document.getElementById("alpha");
-range.addEventListener("input", onInputRange, false);
-function onInputRange() {
-    alpha = range.value / 100.0;
-    drawSampleCanvas();
+var sizeInput = document.getElementById("size");
+
+range.addEventListener("input", drawPreviewCanvas, false);
+sizeInput.addEventListener("input", drawPreviewCanvas, false);
+
+function getColor() {
+    return picker.style.backgroundColor;
 }
 
-function drawSampleCanvas() {
+function getAlpha() {
+    return range.value / 100.0;
+}
+
+function getSize() {
+    return sizeInput.value / 2.0;
+}
+
+function drawPreviewCanvas() {
     previewContext.clearRect(0, 0, 150, 150);
     previewContext.beginPath();
-    previewContext.globalAlpha = alpha;
-    previewContext.strokeStyle = color;
-    previewContext.lineWidth = size * 1.5;
+    previewContext.globalAlpha = getAlpha();
+    previewContext.strokeStyle = getColor();
+    previewContext.lineWidth = getSize() * 1.5;
     previewContext.lineCap = 'round';
     previewContext.moveTo(75, 75);
     previewContext.lineTo(75, 75);
@@ -81,11 +86,6 @@ function appendChat(text, sessionId, self, time) {
 for (var i = 0; i < menuIcon.length; i++) {
     menuIcon[i].addEventListener("click", canvasMenu, false)
 }
-
-onInputSize();
-colorPicker.setHex("#555555");
-onInputRange();
-
 document.getElementById("chatsend").addEventListener("click", sendChat, false);
 document.getElementById("downloadPng").addEventListener("click", openCanvasPng, false);
 

@@ -128,10 +128,6 @@ body {
     border-radius: 0.83em;
 }
 
-input[type="color"] {
-    margin-right: 10px;
-}
-
 input[type="text"] {
     -webkit-transition: all 0.1s;
     -moz-transition: all 0.1s;

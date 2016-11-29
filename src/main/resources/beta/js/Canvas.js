@@ -3,9 +3,6 @@ var mainContext = mainCanvas.getContext("2d");
 
 var selfCanvas = document.getElementById("selfCanvas");
 var selfContext = selfCanvas.getContext('2d');
-var size = 5;
-var color = "#555555";
-var alpha = 1.0;
 var selectId;
 var locations = [];
 
@@ -47,7 +44,7 @@ function margeMainCanvas(destContext) {
 
 // SelfCanvas
 MouseEvent(selfCanvas, clickProcess, function (X, Y) {
-    sendDraw("paint", size, color, alpha, X, Y);
+    sendDraw("paint", getSize(), getColor(), getAlpha(), X, Y);
 });
 
 selfCanvas.addEventListener('mouseup', sendDrawEnd, false);
@@ -55,7 +52,7 @@ selfCanvas.addEventListener('mouseout', sendDrawEnd, false);
 
 if (window.TouchEvent) {
     TouchEvent(selfCanvas, clickProcess, function (X, Y) {
-        sendDraw("paint", size, color, alpha, X, Y);
+        sendDraw("paint", getSize(), getColor(), getAlpha(), X, Y);
     });
     selfCanvas.addEventListener('touchend', sendDrawEnd, false);
     selfCanvas.addEventListener('touchcancel', sendDrawEnd, false);
@@ -75,12 +72,12 @@ function clickProcess(X, Y) {
                 colorPicker.setHex(hex);
                 break;
             case "fill":
-                sendDraw("fill", 0, color, alpha, X, Y);
+                sendDraw("fill", 0, getColor(), getAlpha(), X, Y);
                 break;
         }
         toggleSelectable(undefined);
     } else {
-        sendDraw("paint", size, color, alpha, X, Y);
+        sendDraw("paint", getSize(), getColor(), getAlpha(), X, Y);
     }
 }
 
@@ -105,7 +102,6 @@ function draw(sessionId, Size, Color, Alpha, X, Y) {
     selfContext.stroke();
     location.X1 = X;
     location.Y1 = Y;
-    selfContext.fill();
 }
 
 function drawEnd(sessionId) {
@@ -132,7 +128,7 @@ MouseEvent(coverCanvas, function (X, Y) {
 coverCanvas.addEventListener('mouseup', function (e) {
     if (e.button === 0) {
         var rect = e.target.getBoundingClientRect();
-        sendDraw(selectId, size, color, alpha, fLoc.X, fLoc.Y,
+        sendDraw(selectId, getAlpha(), getColor(), getAlpha(), fLoc.X, fLoc.Y,
             ~~(e.clientX - rect.left), ~~(e.clientY - rect.top));
         toggleSelectable(undefined);
         noneCoverCanvas();
@@ -149,7 +145,7 @@ if (window.TouchEvent) {
     });
 
     coverCanvas.addEventListener("touchend", function () {
-        sendDraw(selectId, size, color, alpha, fLoc.X, fLoc.Y, eLoc.X, eLoc.Y);
+        sendDraw(selectId, getSize(), getColor(), getAlpha(), fLoc.X, fLoc.Y, eLoc.X, eLoc.Y);
         toggleSelectable(undefined);
         noneCoverCanvas();
     }, false);
@@ -158,9 +154,9 @@ if (window.TouchEvent) {
 function moveCover(X, Y) {
     clearCoverCanvas();
     coverContext.beginPath();
-    coverContext.globalAlpha = alpha;
-    coverContext.strokeStyle = color;
-    coverContext.lineWidth = size;
+    coverContext.globalAlpha = getAlpha();
+    coverContext.strokeStyle = getColor();
+    coverContext.lineWidth = getSize();
     drawCover(coverContext, selectId, fLoc.X, fLoc.Y, X, Y);
     coverContext.stroke();
 }
@@ -200,3 +196,4 @@ function noneCoverCanvas() {
 }
 
 clearCanvas();
+noneCoverCanvas();
