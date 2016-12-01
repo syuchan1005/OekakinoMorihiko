@@ -1,9 +1,4 @@
-var menuIcon = document.getElementsByClassName("menuicon");
-var chatUserText = document.getElementById("username");
-var chatText = document.getElementById("chattext");
-var chat_list = document.getElementById("chatcontentlist");
-var previewCanvas = document.getElementById("previewCanvas");
-var previewContext = previewCanvas.getContext("2d");
+var previewContext = $("#previewCanvas")[0].getContext("2d");
 
 function canvasMenu() {
     noneCoverCanvas();
@@ -12,7 +7,7 @@ function canvasMenu() {
         if (this.classList.contains("special")) {
             showCoverCanvas();
         }
-    } else if (this.id == "color-save"){
+    } else if (this.id == "color-save") {
         addSample(getColor());
     } else if (this.id.indexOf("color") + 1) {
         setColor("#" + this.id.slice(5, this.id.length));
@@ -80,6 +75,7 @@ function drawPreviewCanvas() {
 }
 
 var colorSample = document.getElementById("color-sample");
+
 function addSample(hex) {
     var colorButton = document.createElement("button");
     colorButton.innerHTML = hex;
@@ -97,28 +93,27 @@ function addSample(hex) {
 
 document.getElementById("color-save").addEventListener("click", canvasMenu, false);
 
-function appendChat(text, sessionId, self, time) {
+function appendChat(user ,text, sessionId, self, time) {
     time = time || "";
-    var split = text.split("<br>");
     var ele = document.createElement("article");
     ele.id = self ? "mychatcontent" : "chatcontent";
-    ele.innerHTML = "<span>" + split[0].replace("<", "&lt;").replace(">", "&gt;") + "</span>" +
+    ele.innerHTML = "<span>" + user.replace("<", "&lt;").replace(">", "&gt;") + "</span>" +
         "<span class='subChatContent'>" + "id:" + sessionId + "</span>" +
         "<span class='subChatContent'>" + time + "</span>" +
-        "<div>" + split[1].replace("<", "&lt;").replace(">", "&gt;") + "</div>";
-    chat_list.insertBefore(ele, chat_list.firstChild);
+        "<div>" + text.replace("<", "&lt;").replace(">", "&gt;") + "</div>";
+    var chatList = document.getElementById("chatcontentlist");
+    chatList.insertBefore(ele, chatList.firstChild);
 }
 
-for (var i = 0; i < menuIcon.length; i++) {
-    menuIcon[i].addEventListener("click", canvasMenu, false);
-}
-document.getElementById("chatsend").addEventListener("click", sendChat, false);
-document.getElementById("downloadPng").addEventListener("click", openCanvasPng, false);
+$(".menuicon").on("click", canvasMenu);
+
+$("#chatsend").on("click", sendChat);
+$("#downloadPng").on("click", openCanvasPng);
 
 document.onkeydown = function (e) {
     if (e.ctrlKey) {
         if (e.which == 13) { //enter
-            sendChat();
+            $("#chatsend").click();
         }
     } else if (e.keyCode == 27) {
         noneCoverCanvas();

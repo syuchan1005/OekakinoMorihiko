@@ -9,7 +9,7 @@ function toPNGBinary(canvas) {
 }
 
 function openCanvasPng() {
-    window.open(window.URL.createObjectURL(new Blob([toPNGBinary(mainCanvas).buffer], {type: 'image/png'})));
+    window.open(window.URL.createObjectURL(new Blob([toPNGBinary($("#mainCanvas")).buffer], {type: 'image/png'})));
 }
 
 function fillCanvas(context2D, Width, Height, Color, Alpha) {
@@ -57,30 +57,30 @@ function getCurrentTime() {
 }
 
 function MouseEvent(canvas, downFunc, moveFunc) {
-    canvas.addEventListener('mousedown', function (e) {
+    canvas.on('mousedown', function (e) {
         if (e.button === 0) {
             var rect = e.target.getBoundingClientRect();
             if (downFunc != undefined) downFunc(~~(e.clientX - rect.left), ~~(e.clientY - rect.top), e);
         }
-    }, false);
-    canvas.addEventListener('mousemove', function (e) {
+    });
+    canvas.on('mousemove', function (e) {
         if (e.buttons === 1 || e.witch === 1) {
             var rect = e.target.getBoundingClientRect();
             if (moveFunc != undefined) moveFunc(~~(e.clientX - rect.left), ~~(e.clientY - rect.top), e);
         }
-    }, false);
+    });
 }
 
 function TouchEvent(canvas, startFunc, moveFunc) {
-    canvas.addEventListener("touchstart", function (e) {
+    canvas.on("touchstart", function (e) {
         var touches = e.touches.item(0);
         var rect = e.target.getBoundingClientRect();
         if (startFunc != undefined) startFunc(~~(touches.clientX - rect.left), ~~(touches.clientY - rect.top), e);
-    }, false);
-    canvas.addEventListener("touchmove", function (e) {
+    });
+    canvas.on("touchmove", function (e) {
         e.preventDefault();
         var touches = e.touches.item(0);
         var rect = e.target.getBoundingClientRect();
         if (moveFunc != undefined) moveFunc(~~(touches.clientX - rect.left), ~~(touches.clientY - rect.top), e);
-    }, false);
+    });
 }

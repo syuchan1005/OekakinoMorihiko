@@ -11,13 +11,29 @@
 		<link rel="stylesheet" href="css/color-picker.css">
 		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
 			  integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
 		<script src="js/Common.js"></script>
 		<script src="js/lib/Floodfill.js"></script>
 		<script src="js/lib/color-picker.min.js"></script>
+		<script src="js/Websocket.js"></script>
+		<script src="js/Login.js"></script>
 	</head>
 
 	<body>
+		<div id="login-dialog" title="Connect">
+			<label for="jquery-ui-dialog-form-name">UserName</label>
+			<input type="text" id="jquery-ui-dialog-form-name" class="text ui-widget-content ui-corner-all" />
+		</div>
+
+		<div id="no-websocket-dialog" title="Connect">
+			<p>Press OK will not connect to WebSocket.</p>
+		</div>
+
 		<div id="left">
 			<div id="canvases">
 				<canvas width="1280" height="720" class="canvas" id="mainCanvas"></canvas>
@@ -26,8 +42,8 @@
 			</div>
 			<div id="canvasmenu">
 				<div id="mode">
-					<div class="menuicon" id="modeicon" onclick="webSocketReload()"></div>
-					<div id="modetext"></div>
+					<div class="menuicon" id="modeicon"></div>
+					<div id="modetext">Server offline</div>
 				</div>
 
 				<div id="items">
@@ -68,19 +84,11 @@
 		<div id="right">
 			<div id="chatTable">
 				<div id="sessioncount">接続中...</div>
-				<table>
-					<tr>
-						<th><label>ユーザー名</label></th>
-						<th><input id="username" type="text"></th>
-						<th rowspan="2">
-							<input id="chatsend" type="button" value="送信">
-						</th>
-					</tr>
-					<tr>
-						<th><label>テキスト</label></th>
-						<th><input id="chattext" type="text"></th>
-					</tr>
-				</table>
+				<div>
+					<label>テキスト</label>
+					<input id="chattext" type="text">
+					<input id="chatsend" type="button" value="送信">
+				</div>
 				<div id="chatcontentlist">
 					<!-- Javascript
 					<article class="chatcontent">
@@ -104,8 +112,7 @@
 			</div>
 		</div>
 
-		<script src="js/Canvas.js"></script>
-		<script src="js/Websocket.js"></script>
 		<script src="js/Menu.js"></script>
+		<script src="js/Canvas.js"></script>
 	</body>
 </html>

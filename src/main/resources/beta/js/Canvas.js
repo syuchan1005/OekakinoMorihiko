@@ -1,13 +1,9 @@
-var mainCanvas = document.getElementById("mainCanvas");
-var mainContext = mainCanvas.getContext("2d");
+var mainContext = $("#mainCanvas")[0].getContext("2d");
+var selfContext = $("#selfCanvas")[0].getContext('2d');
+var coverContext = $("#coverCanvas")[0].getContext('2d');
 
-var selfCanvas = document.getElementById("selfCanvas");
-var selfContext = selfCanvas.getContext('2d');
 var selectId;
 var locations = [];
-
-var coverCanvas = document.getElementById("coverCanvas");
-var coverContext = coverCanvas.getContext('2d');
 var fLoc = [];
 var eLoc = [];
 
@@ -43,19 +39,19 @@ function margeMainCanvas(destContext) {
 }
 
 // SelfCanvas
-MouseEvent(selfCanvas, clickProcess, function (X, Y) {
+MouseEvent($("#selfCanvas"), clickProcess, function (X, Y) {
     sendDraw("paint", getSize(), getColor(), getAlpha(), X, Y);
 });
 
-selfCanvas.addEventListener('mouseup', sendDrawEnd, false);
-selfCanvas.addEventListener('mouseout', sendDrawEnd, false);
+$("#selfCanvas").on('mouseup', sendDrawEnd);
+$("#selfCanvas").on('mouseout', sendDrawEnd);
 
 if (window.TouchEvent) {
-    TouchEvent(selfCanvas, clickProcess, function (X, Y) {
+    TouchEvent($("#selfCanvas"), clickProcess, function (X, Y) {
         sendDraw("paint", getSize(), getColor(), getAlpha(), X, Y);
     });
-    selfCanvas.addEventListener('touchend', sendDrawEnd, false);
-    selfCanvas.addEventListener('touchcancel', sendDrawEnd, false);
+    $("#selfCanvas").on('touchend', sendDrawEnd);
+    $("#selfCanvas").on('touchcancel', sendDrawEnd);
 }
 
 function sendDrawEnd() {
@@ -80,7 +76,7 @@ function clickProcess(X, Y) {
 }
 
 function clearCanvas() {
-    fillCanvas(mainContext, mainCanvas.width, mainCanvas.height, "#f5f5f5", 1);
+    fillCanvas(mainContext, 1280, 720, "#f5f5f5", 1);
 }
 
 function draw(sessionId, Size, Color, Alpha, X, Y) {
@@ -118,12 +114,12 @@ function removeDraw(sessionId) {
 }
 
 // CoverCanvas
-MouseEvent(coverCanvas, function (X, Y) {
+MouseEvent($("#coverCanvas"), function (X, Y) {
     fLoc.X = X;
     fLoc.Y = Y;
 }, moveCover);
 
-coverCanvas.addEventListener('mouseup', function (e) {
+$("#coverCanvas").on('mouseup', function (e) {
     if (e.button === 0) {
         var rect = e.target.getBoundingClientRect();
         sendDraw(selectId, getAlpha(), getColor(), getAlpha(), fLoc.X, fLoc.Y,
@@ -131,22 +127,22 @@ coverCanvas.addEventListener('mouseup', function (e) {
         toggleSelectable(undefined);
         noneCoverCanvas();
     }
-}, false);
+});
 
 if (window.TouchEvent) {
-    TouchEvent(coverCanvas, function (X, Y) {
-        fLoc.X = X;
-        fLoc.Y = Y;
-    },
-    function (X, Y) {
-        moveCover((eLoc.X = X), (eLoc.Y = Y));
-    });
+    TouchEvent($("#coverCanvas"), function (X, Y) {
+            fLoc.X = X;
+            fLoc.Y = Y;
+        },
+        function (X, Y) {
+            moveCover((eLoc.X = X), (eLoc.Y = Y));
+        });
 
-    coverCanvas.addEventListener("touchend", function () {
+    $("#coverCanvas").on("touchend", function () {
         sendDraw(selectId, getSize(), getColor(), getAlpha(), fLoc.X, fLoc.Y, eLoc.X, eLoc.Y);
         toggleSelectable(undefined);
         noneCoverCanvas();
-    }, false);
+    });
 }
 
 function moveCover(X, Y) {
@@ -184,13 +180,13 @@ function clearCoverCanvas() {
 
 function showCoverCanvas() {
     clearCoverCanvas();
-    coverCanvas.style.display = "block";
-    coverCanvas.style.pointerEvents = "auto";
+    $("#coverCanvas").css("display", "block");
+    $("#coverCanvas").css("pointer-events", "auto");
 }
 
 function noneCoverCanvas() {
-    coverCanvas.style.display = "none";
-    coverCanvas.style.pointerEvents = "none";
+    $("#coverCanvas").css("display", "none");
+    $("#coverCanvas").css("pointer-events", "none");
 }
 
 clearCanvas();

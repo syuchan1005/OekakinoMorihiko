@@ -1,35 +1,27 @@
-/**
- * Created by syuchan on 2016/10/14.
- */
 var keepAlive;
 var mySessionId;
 var webSocket;
-
-var modeIcon = document.getElementById("modeicon");
-var modeText = document.getElementById("modetext");
-
-var count = document.getElementById("sessioncount");
 var loadCache = "";
 
-function webSocketInit() {
+function webSocketInit(name) {
     new Promise(function () {
-        var url = (("https:" == document.location.protocol) ? "wss://" : "ws://") + location.hostname + ":" + (location.port || 80) + "/web/";
+        var url = (("https:" == document.location.protocol) ? "wss://" : "ws://") +
+            location.hostname + ":" + (location.port || 80) + "/web?name=" + name;
         webSocket = new WebSocket(url);
 
         webSocket.onopen = function () {
             keepAlive = setInterval(function () {
                 webSocket.send("KeepAlive");
             }, 60000);
-            modeIcon.style.backgroundColor = "#00e676";
-            modeText.innerHTML = "Server online";
+            $("#modeicon").css("background-color", "#00e676");
+            $("#modetext").html("Server online");
         };
 
         webSocket.onclose = function () {
             clearInterval(keepAlive);
-            appendChat("Application<br>WebSocket connection closed.", "application", true);
-            count.innerHTML = "サーバーに接続できません";
-            modeIcon.style.backgroundColor = "#e74c3c";
-            modeText.innerHTML = "Server offline";
+            appendChat("Application", "WebSocket connection closed.", "application", true);
+            $("#modeicon").css("background-color", "#e74c3c");
+            $("#modetext").html("Server offline");
         };
 
         webSocket.onmessage = function (event) {
@@ -39,15 +31,8 @@ function webSocketInit() {
     });
 }
 
-function webSocketReload() {
-    if (webSocket.readyState == WebSocket.OPEN) {
-        appendChat("Application<br>WebSocket already opened!", "application", true)
-    } else {
-        webSocketInit();
-    }
-}
-
 function onMessageProcess(json) {
+    var count = $("#sessioncount");
     if (json.selfSessionId != undefined) mySessionId = json.selfSessionId;
     if (json.sessionCount == undefined) count.innerHTML = "接続人数: " + json.sessionCountLoad + "人";
     else {
@@ -63,7 +48,7 @@ function onMessageProcess(json) {
                 }
                 break;
             case "chat":
-                appendChat(json.text, json.sessionId, (json.sessionId == mySessionId), json.time);
+                appendChat(json.sessionName, json.text, json.sessionId, (json.sessionId == mySessionId), json.time);
                 break;
             case "fill":
                 selfContext.globalAlpha = json.alpha;
@@ -94,7 +79,7 @@ function onMessageProcess(json) {
                     }
                 } else if (json.option == "send") {
                     json.option = "load";
-                    var text = mainCanvas.toDataURL();
+                    var text = $("#mainCanvas").toDataURL();
                     var len = Math.ceil(text.length / 4);
                     for (var i = 0; i < 4; i++) {
                         json.text = text.substring(i * len, (i + 1) * len);
@@ -128,15 +113,16 @@ function sendDraw(Mode, Size, Color, Alpha, X1, Y1, X2, Y2) {
 }
 
 function sendChat() {
+    var chatText = $("#chattext");
+    var text = chatText.val();
     var json = {};
     json.mode = "chat";
-    var user = chatUserText.value;
-    var text = chatText.value;
-    if (text == undefined || text == "") return;
-    json.text = (user == undefined || user == "" ? "匿名" : user) + "<br>" + text;
-    json.time = getCurrentTime();
-    send(json);
-    chatText.value = "";
+    if (!(text == undefined || text == "")) {
+        json.text = text;
+        json.time = getCurrentTime();
+        send(json);
+        chatText.val("");
+    }
 }
 
 function send(object) {
@@ -145,8 +131,7 @@ function send(object) {
     } else {
         object.sessionCount = -1;
         object.sessionId = -1;
+        object.sessionName = "NoConnection";
         onMessageProcess(object);
     }
 }
-
-webSocketInit();
