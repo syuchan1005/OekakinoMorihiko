@@ -1,5 +1,5 @@
 $(function () {
-    var name = $('#jquery-ui-dialog-form-name');
+    var $name = $('#jquery-ui-dialog-form-name');
 
     var $noWebSocketDialog = $("#no-websocket-dialog");
     var $loginDialog = $('#login-dialog');
@@ -29,14 +29,12 @@ $(function () {
         modal: true,
         buttons: {
             'Connect': function () {
-                if (name.val()) {
-                    $loginDialog.dialog('close');
-                }
+                if ($name.val()) $loginDialog.dialog('close');
             },
         },
         beforeClose: function (event, ui) {
-            if (name.val()) {
-                webSocketInit(name.val());
+            if ($name.val()) {
+                webSocketInit($name.val());
             } else {
                 $noWebSocketDialog.dialog("open");
             }

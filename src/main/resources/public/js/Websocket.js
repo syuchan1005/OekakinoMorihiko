@@ -6,7 +6,7 @@ var loadCache = "";
 function webSocketInit(name) {
     new Promise(function () {
         var url = (("https:" == document.location.protocol) ? "wss://" : "ws://") +
-            location.hostname + ":" + (location.port || 80) + "/web?name=" + name;
+            location.hostname + ":" + (location.port ? ":" + location.port : "") + "/web?name=" + name;
         webSocket = new WebSocket(url);
 
         webSocket.onopen = function () {

@@ -3,4 +3,5 @@ src/test
 target
 *.iml
 node/node_modules/
-node/npm-debug.log
+src/main/resources/jQuery/css/*.css
+src/main/resources/jQuery/css/*.css.map

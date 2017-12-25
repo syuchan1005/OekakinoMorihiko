@@ -1,0 +1,222 @@
+body {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+#left, #right {
+    flex-direction: row;
+}
+
+#canvases {
+    position: relative;
+    width: 1290px;
+    height: 730px;
+}
+
+#mainCanvas {
+    pointer-events: none;
+}
+
+#selfCanvas {
+    pointer-events: auto;
+}
+
+#coverCanvas {
+    display: none;
+    pointer-events: none;
+}
+
+#previewCanvas {
+    display: block;
+    border: solid;
+    width: 100px;
+    height: 100px;
+}
+
+.canvas {
+    border: 5px solid #e6e6e6;
+    cursor: default;
+    position: absolute;
+}
+
+.menuicon {
+    font-size: 13px;
+    width: 1.7em;
+    height: 1.7em;
+    text-align: center;
+    line-height: 1.9;
+    cursor: pointer;
+    margin: 2px;
+    color: #272727;
+}
+
+.tweet-btn {
+    background-color: #1b95e0;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: #fff;
+    padding: 4px 8px 4px 8px;
+    text-align: center;
+    width: 4rem;
+}
+
+#share {
+    margin: auto;
+}
+
+#alphavalue {
+    width: 2.49em;
+}
+
+#chatcontent {
+    background-color: #dddddd;
+    border-radius: 3px;
+    padding-left: 5px;
+    margin: 10px 10px 10px 10px;
+}
+
+#mychatcontent {
+    background-color: #00e676;
+    border-radius: 3px;
+    padding-left: 5px;
+    margin: 10px 10px 10px 10px;
+}
+
+#chatcontentlist {
+    overflow-y: scroll;
+    width: 305px;
+    height: 660px;
+}
+
+.subChatContent {
+    font-size: 70%;
+    color: #555555;
+    margin-left: 5px;
+}
+
+#canvasmenu {
+    width: 1290px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#mode {
+    flex-direction: row;
+}
+
+#items {
+    display: flex;
+    flex-direction: column;
+}
+
+#icons {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+#inputs {
+    display: flex;
+    flex-direction: column;
+}
+
+.inputs-label {
+    display: block;
+}
+
+#modeicon {
+    background-color: #e74c3c;
+    border-radius: 0.83em;
+}
+
+#color-sample {
+    width: 455px;
+    border: double;
+}
+
+input[type="text"] {
+    -webkit-transition: all 0.1s;
+    -moz-transition: all 0.1s;
+    -o-transition: all 0.1s;
+    max-width: 128px;
+    margin: 0 10px;
+    border: none;
+    border-bottom: 1px solid #ddd;
+}
+
+input[type="text"]:focus {
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    border-bottom-color: #39F;
+    outline: 0;
+}
+
+input[type="text"]#alphavalue {
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    margin-right: 10px;
+}
+
+input[type="range"] {
+    -webkit-appearance: none;
+    background-color: #bdc3c7;
+    width: 300px;
+    height: 5px;
+    margin-top: 10px;
+    outline: 0;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background-color: #e74c3c;
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    border: 2px solid white;
+}
+
+input[type="range"]#size::-webkit-slider-thumb {
+    background-color: #555555;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+    background-color: white;
+    border: 2px solid #e74c3c;
+}
+
+input[type="range"]#size::-webkit-slider-thumb:hover {
+    border: none;
+}
+
+input[type="range"]#alpha::-webkit-slider-thumb:active {
+    transform: scale(1.4);
+}
+
+input[type="button"] {
+    -webkit-transition: all 0.1s;
+    -moz-transition: all 0.1s;
+    -o-transition: all 0.1s;
+    border: 1px solid #ddd;
+    background: transparent;
+    padding: 8px 15px;
+}
+
+input[type="button"]:hover {
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    cursor: pointer;
+    border-color: #39F;
+}
+
+a {
+    transition: all 0.1s;
+    color: #272727;
+    text-decoration: none;
+}
+
+a:hover {
+    transition: all 0.3s;
+    color: #39F;
+}
